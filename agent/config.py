@@ -124,6 +124,10 @@ SEEN_LOOKBACK_DIGESTS = 90
 # Text sent to Claude per item.
 SELECT_SNIPPET_CHARS = 420
 ARTICLE_MAX_CHARS = 6000
+# An item is only published when at least this much source text could be read; Claude ranks a few
+# spare picks so an unreadable page (JavaScript-only site, bot wall) is replaced, not guessed at.
+MIN_SOURCE_CHARS = 300
+SPARE_PICKS = 3
 
 USER_AGENT = "research-agent-digest/1.0 (GitHub Actions; daily paper digest)"
 

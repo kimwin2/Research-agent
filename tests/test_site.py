@@ -80,6 +80,17 @@ class SiteTests(unittest.TestCase):
         self.assertEqual(digest.seen_keys(digest.load_digests(), exclude_date="2026-11-24"), set())
 
 
+class ReadableTests(unittest.TestCase):
+    def test_unreadable_items_are_replaced_by_spares(self):
+        from agent.sources import Candidate
+
+        ranked = [(Candidate(id=name, title=name, url=f"https://x/{name}"), "LLM") for name in "abcd"]
+        texts = {"a": "x" * 500, "b": "", "c": "short", "d": "y" * 500}
+        with mock.patch.object(digest, "content_for", lambda candidate: texts[candidate.id]):
+            picked = digest.readable(ranked, count=2)
+        self.assertEqual([candidate.id for candidate, _, _ in picked], ["a", "d"])
+
+
 class ContentTests(unittest.TestCase):
     def test_html_to_text_prefers_article_and_skips_scripts(self):
         body = "word " * 150
