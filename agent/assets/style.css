@@ -69,6 +69,11 @@ header.site nav a { text-decoration: none; }
 .item h2 { margin: 10px 0 0; font-size: 20px; line-height: 1.4; letter-spacing: -0.02em; }
 .item h2 a { text-decoration: none; }
 .headline { margin: 8px 0 0; font-size: 17px; font-weight: 600; color: var(--accent); }
+.media { margin: 14px 0 0; }
+.media img, .media video {
+  display: block; width: 100%; max-height: 380px; object-fit: contain;
+  background: var(--eff-bg); border: 1px solid var(--line); border-radius: 10px;
+}
 .tldr { margin: 12px 0 0; }
 .tldr b, .eff b {
   margin-right: 6px; font-size: 12px; letter-spacing: 0.05em; color: var(--muted);

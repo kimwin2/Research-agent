@@ -47,6 +47,12 @@ class ParseTests(unittest.TestCase):
                    entry("old", "02", 500)]
         self.assertEqual([c.id for c in sources.parse_hf(payload, NOW)], ["arxiv:a", "arxiv:c", "arxiv:b"])
 
+    def test_hf_takes_a_picture_over_a_video(self):
+        entry = {"paper": {"id": "m", "title": "m", "summary": "s", "submittedOnDailyAt": "2026-11-25T00:00:00.000Z"},
+                 "mediaUrls": ["https://cdn/a.mp4", "https://cdn/b.png"]}
+        (paper,) = sources.parse_hf([entry], NOW)
+        self.assertEqual(paper.media, "https://cdn/b.png")
+
     def test_arxiv_strips_version_and_whitespace_and_drops_old(self):
         (paper,) = sources.parse_arxiv(ARXIV_XML, NOW)
         self.assertEqual(paper.id, "arxiv:2611.32064")

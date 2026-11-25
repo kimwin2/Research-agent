@@ -19,6 +19,7 @@ from . import config, fetch
 ARXIV_ID = re.compile(r"(?:arxiv\.org/(?:abs|pdf|html)|huggingface\.co/papers)/(\d{4}\.\d{4,5})")
 PAPER_SOURCES = ("hf_daily", "arxiv")
 ATOM = {"atom": "http://www.w3.org/2005/Atom"}
+PICTURE_EXTENSIONS = (".png", ".jpg", ".jpeg", ".gif", ".webp", ".avif")
 
 
 @dataclass
@@ -33,6 +34,7 @@ class Candidate:
     signals: dict[str, int] = field(default_factory=dict)  # hn_points, hn_comments, hf_upvotes,
     # github_stars
     links: dict[str, str] = field(default_factory=dict)  # hn, hf, arxiv, code
+    media: str = ""  # one figure or demo video the authors uploaded (HF Daily Papers)
 
     def to_dict(self) -> dict:
         return asdict(self)
@@ -114,6 +116,12 @@ def fetch_hn(now: datetime) -> list[Candidate]:
 # --- Hugging Face Daily Papers -------------------------------------------------
 
 
+def _first_media(urls: list[str]) -> str:
+    """A picture if the authors uploaded one, otherwise their first video."""
+    pictures = [u for u in urls if u.lower().split("?")[0].endswith(PICTURE_EXTENSIONS)]
+    return (pictures or list(urls) or [""])[0]
+
+
 def parse_hf(payload: list[dict], now: datetime) -> list[Candidate]:
     cutoff = (now - timedelta(days=config.HF_MAX_AGE_DAYS)).isoformat()
     candidates: dict[str, Candidate] = {}
@@ -140,6 +148,7 @@ def parse_hf(payload: list[dict], now: datetime) -> list[Candidate]:
             published=submitted,
             signals=signals,
             links=links,
+            media=_first_media(entry.get("mediaUrls") or paper.get("mediaUrls") or []),
         )
     ranked = sorted(candidates.values(), key=lambda c: c.signals["hf_upvotes"], reverse=True)
     return ranked[: config.HF_MAX_CANDIDATES]
@@ -231,6 +240,7 @@ def merge(candidates: list[Candidate]) -> list[Candidate]:
         existing.published = existing.published or candidate.published
         existing.signals.update(candidate.signals)
         existing.links.update(candidate.links)
+        existing.media = existing.media or candidate.media
     return list(merged.values())
 
 

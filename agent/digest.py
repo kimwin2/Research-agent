@@ -11,11 +11,12 @@ import argparse
 import json
 import os
 import sys
+from dataclasses import dataclass
 from datetime import date, datetime, timezone
 from urllib.parse import urlparse
 
 from . import config, llm
-from .content import content_for
+from .content import read_source
 from .sources import Candidate, collect
 
 CATEGORIES = ["LLM", "VLM", "VLA", "Systems"]
@@ -172,25 +173,33 @@ def select(candidates: list[Candidate], count: int) -> list[tuple[Candidate, str
     return ranked[:wanted]
 
 
-def readable(ranked: list[tuple[Candidate, str]], count: int) -> list[tuple[Candidate, str, str]]:
+@dataclass
+class Pick:
+    candidate: Candidate
+    category: str
+    text: str  # source text the summary is written from
+    media: dict | None  # {"type": "image" | "video", "url": ...}
+
+
+def readable(ranked: list[tuple[Candidate, str]], count: int) -> list[Pick]:
     """The first `count` ranked items whose source text could actually be read."""
-    picked: list[tuple[Candidate, str, str]] = []
+    picked: list[Pick] = []
     for candidate, category in ranked:
-        text = content_for(candidate)
+        text, media = read_source(candidate)
         if len(text) < config.MIN_SOURCE_CHARS:
             print(f"::notice::skipping {candidate.id} ({candidate.url}): source text not readable")
             continue
-        picked.append((candidate, category, text))
+        picked.append(Pick(candidate, category, text, media))
         if len(picked) == count:
             break
     return picked
 
 
-def summarize(picked: list[tuple[Candidate, str, str]]) -> list[dict]:
+def summarize(picked: list[Pick]) -> list[dict]:
     blocks = [
-        f'<item id="{candidate.id}">\ntitle: {candidate.title}\nurl: {candidate.url}\n'
-        f"source text:\n{text}\n</item>"
-        for candidate, _, text in picked
+        f'<item id="{pick.candidate.id}">\ntitle: {pick.candidate.title}\n'
+        f"url: {pick.candidate.url}\nsource text:\n{pick.text}\n</item>"
+        for pick in picked
     ]
     user = "Summarise each item. Return them in the same order with the same `id`.\n\n" + "\n\n".join(
         blocks
@@ -200,7 +209,8 @@ def summarize(picked: list[tuple[Candidate, str, str]]) -> list[dict]:
     summaries = {item["id"]: item for item in answer["items"]}
 
     items = []
-    for candidate, category, _ in picked:
+    for pick in picked:
+        candidate = pick.candidate
         summary = summaries.get(candidate.id)
         if summary is None:
             print(f"::warning::no summary returned for {candidate.id}; dropping it")
@@ -210,11 +220,12 @@ def summarize(picked: list[tuple[Candidate, str, str]]) -> list[dict]:
                 "id": candidate.id,
                 "title": candidate.title,
                 "url": candidate.url,
-                "category": category,
+                "category": pick.category,
                 "published": candidate.published[:10],
                 "sources": candidate.sources,
                 "signals": candidate.signals,
                 "links": candidate.links,
+                "media": pick.media,
                 "headline": summary["headline"].strip(),
                 "tldr": summary["tldr"].strip(),
                 "key_points": [point.strip() for point in summary["key_points"] if point.strip()],

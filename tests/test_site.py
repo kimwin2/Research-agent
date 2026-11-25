@@ -22,6 +22,7 @@ def make_digest(day: str, title: str = "Paper") -> dict:
                 "sources": ["hf_daily", "hackernews"],
                 "signals": {"hf_upvotes": 12, "hn_points": 80},
                 "links": {"arxiv": "https://arxiv.org/abs/2611.00001", "code": "javascript:alert(1)"},
+                "media": {"type": "image", "url": "https://cdn.example/fig.png"},
                 "headline": "핵심 한 줄",
                 "tldr": "요약",
                 "key_points": ["a", "b", "c"],
@@ -62,6 +63,7 @@ class SiteTests(unittest.TestCase):
         self.assertNotIn("javascript:", home)  # and non-http links are dropped
         self.assertIn("HF Daily Papers ▲12 · Hacker News 80pts", home)
         self.assertIn('href="./2026-11-24/"', home)
+        self.assertEqual(home.count('<img src="https://cdn.example/fig.png"'), 1)
 
         archive = (config.SITE_DIR / "archive/index.html").read_text(encoding="utf-8")
         self.assertIn('<a href="../2026-11-24/" title="2026년 11월 24일 (화)">24</a>', archive)
@@ -86,20 +88,33 @@ class ReadableTests(unittest.TestCase):
 
         ranked = [(Candidate(id=name, title=name, url=f"https://x/{name}"), "LLM") for name in "abcd"]
         texts = {"a": "x" * 500, "b": "", "c": "short", "d": "y" * 500}
-        with mock.patch.object(digest, "content_for", lambda candidate: texts[candidate.id]):
+        image = {"type": "image", "url": "https://x/i.png"}
+        with mock.patch.object(digest, "read_source", lambda candidate: (texts[candidate.id], image)):
             picked = digest.readable(ranked, count=2)
-        self.assertEqual([candidate.id for candidate, _, _ in picked], ["a", "d"])
+        self.assertEqual([pick.candidate.id for pick in picked], ["a", "d"])
+        self.assertEqual(picked[0].media, image)
 
 
 class ContentTests(unittest.TestCase):
-    def test_html_to_text_prefers_article_and_skips_scripts(self):
+    def test_page_text_prefers_article_and_skips_scripts(self):
         body = "word " * 150
         html = f"<html><nav>Menu</nav><script>var x=1</script><article><p>{body}</p></article><p>Sidebar</p></html>"
-        text = content.html_to_text(html)
+        text, image = content.parse_page(html)
         self.assertTrue(text.startswith("word word"))
         self.assertNotIn("Menu", text)
         self.assertNotIn("var x", text)
         self.assertNotIn("Sidebar", text)
+        self.assertEqual(image, "")
+
+    def test_page_image_comes_from_preview_meta_and_is_made_absolute(self):
+        html = '<head><meta property="og:image" content="/img/cover.jpg"><meta name="twitter:image" content="x"></head>'
+        self.assertEqual(content.parse_page(html, "https://blog.example/post/1")[1], "https://blog.example/img/cover.jpg")
+
+    def test_media_kind_and_https_only(self):
+        self.assertEqual(content.media("https://c/x.MP4")["type"], "video")
+        self.assertEqual(content.media("https://c/preview?id=3")["type"], "image")
+        self.assertIsNone(content.media("http://c/x.png"))
+        self.assertIsNone(content.media(""))
 
 
 if __name__ == "__main__":

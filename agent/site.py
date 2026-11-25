@@ -56,6 +56,26 @@ def source_line(item: dict) -> str:
     return " · ".join(parts)
 
 
+def render_media(item: dict) -> str:
+    """The item's one picture or video, hot-linked. It removes itself when it fails to load."""
+    media = item.get("media")
+    if not media or not media["url"].startswith("https://"):
+        return ""
+    url = e(media["url"])
+    gone = "this.closest('figure').remove()"
+    if media["type"] == "video":
+        # "#t=3" makes browsers show a frame a few seconds in (past any title card) as the poster;
+        # nothing plays until clicked.
+        return (
+            f'<figure class="media"><video src="{url}#t=3" controls muted playsinline '
+            f'preload="metadata" onerror="{gone}"></video></figure>'
+        )
+    return (
+        f'<figure class="media"><img src="{url}" alt="" loading="lazy" referrerpolicy="no-referrer" '
+        f'onerror="{gone}" onload="if(this.naturalWidth<200){gone}"></figure>'
+    )
+
+
 def render_item(number: int, item: dict) -> str:
     points = "".join(f"<li>{e(point)}</li>" for point in item["key_points"])
     tags = "".join(f"<span>#{e(tag)}</span>" for tag in item["tags"])
@@ -74,6 +94,7 @@ def render_item(number: int, item: dict) -> str:
   </div>
   <h2><a href="{href(item["url"])}">{e(item["title"])}</a></h2>
   <p class="headline">{e(item["headline"])}</p>
+  {render_media(item)}
   <p class="tldr"><b>TL;DR</b> {e(item["tldr"])}</p>
   <ul class="points">{points}</ul>
   <p class="eff"><b>효율 포인트</b> {e(item["efficiency"])}</p>
