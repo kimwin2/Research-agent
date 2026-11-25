@@ -70,9 +70,11 @@ def render_media(item: dict) -> str:
             f'<figure class="media"><video src="{url}#t=3" controls muted playsinline '
             f'preload="metadata" onerror="{gone}"></video></figure>'
         )
+    # The link opens the original, so a wide diagram can be zoomed on a phone.
     return (
-        f'<figure class="media"><img src="{url}" alt="" loading="lazy" referrerpolicy="no-referrer" '
-        f'onerror="{gone}" onload="if(this.naturalWidth<200){gone}"></figure>'
+        f'<figure class="media"><a href="{url}" target="_blank" rel="noopener">'
+        f'<img src="{url}" alt="" loading="lazy" referrerpolicy="no-referrer" '
+        f'onerror="{gone}" onload="if(this.naturalWidth<200){gone}"></a></figure>'
     )
 
 

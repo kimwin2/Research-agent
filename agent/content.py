@@ -7,12 +7,11 @@ from html.parser import HTMLParser
 from urllib.parse import urljoin, urlparse
 
 from . import config, fetch
-from .sources import Candidate, arxiv_id_from_url, fetch_arxiv_abstract
+from .sources import VIDEO_EXTENSIONS, Candidate, arxiv_id_from_url, fetch_arxiv_abstract
 
 SKIPPED_TAGS = {"script", "style", "noscript", "svg", "nav", "header", "footer", "aside", "form"}
 MAIN_TAGS = {"article", "main"}
 GITHUB_REPO = re.compile(r"^https?://github\.com/([\w.-]+)/([\w.-]+)/?$")
-VIDEO_EXTENSIONS = (".mp4", ".webm", ".mov")
 PAGE_IMAGE_META = ("og:image", "og:image:url", "og:image:secure_url", "twitter:image")
 
 

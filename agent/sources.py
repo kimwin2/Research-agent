@@ -20,6 +20,7 @@ ARXIV_ID = re.compile(r"(?:arxiv\.org/(?:abs|pdf|html)|huggingface\.co/papers)/(
 PAPER_SOURCES = ("hf_daily", "arxiv")
 ATOM = {"atom": "http://www.w3.org/2005/Atom"}
 PICTURE_EXTENSIONS = (".png", ".jpg", ".jpeg", ".gif", ".webp", ".avif")
+VIDEO_EXTENSIONS = (".mp4", ".webm", ".m4v")  # formats browsers play; not .mov/.qt
 
 
 @dataclass
@@ -117,9 +118,11 @@ def fetch_hn(now: datetime) -> list[Candidate]:
 
 
 def _first_media(urls: list[str]) -> str:
-    """A picture if the authors uploaded one, otherwise their first video."""
-    pictures = [u for u in urls if u.lower().split("?")[0].endswith(PICTURE_EXTENSIONS)]
-    return (pictures or list(urls) or [""])[0]
+    """A picture if the authors uploaded one, otherwise their first video browsers can play."""
+    def of_kind(extensions: tuple[str, ...]) -> list[str]:
+        return [u for u in urls if u.lower().split("?")[0].endswith(extensions)]
+
+    return (of_kind(PICTURE_EXTENSIONS) or of_kind(VIDEO_EXTENSIONS) or [""])[0]
 
 
 def parse_hf(payload: list[dict], now: datetime) -> list[Candidate]:

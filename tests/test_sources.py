@@ -52,6 +52,10 @@ class ParseTests(unittest.TestCase):
                  "mediaUrls": ["https://cdn/a.mp4", "https://cdn/b.png"]}
         (paper,) = sources.parse_hf([entry], NOW)
         self.assertEqual(paper.media, "https://cdn/b.png")
+        entry["mediaUrls"] = ["https://cdn/clip.qt", "https://cdn/a.mp4"]  # .qt does not play in browsers
+        self.assertEqual(sources.parse_hf([entry], NOW)[0].media, "https://cdn/a.mp4")
+        entry["mediaUrls"] = ["https://cdn/clip.qt"]
+        self.assertEqual(sources.parse_hf([entry], NOW)[0].media, "")
 
     def test_arxiv_strips_version_and_whitespace_and_drops_old(self):
         (paper,) = sources.parse_arxiv(ARXIV_XML, NOW)
