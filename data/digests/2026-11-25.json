@@ -1,14 +1,14 @@
 {
   "date": "2026-11-25",
-  "generated_at": "2026-11-25T13:43:34+00:00",
+  "generated_at": "2026-11-25T13:57:16+00:00",
   "candidates": {
-    "hackernews": 24,
-    "hf_daily": 40,
-    "arxiv": 40
+    "hackernews": 30,
+    "hf_daily": 60,
+    "arxiv": 20
   },
   "usage": {
-    "input_tokens": 22616,
-    "output_tokens": 3434,
+    "input_tokens": 23769,
+    "output_tokens": 3109,
     "calls": 2,
     "models": [
       "claude-opus-5-5"
@@ -16,133 +16,163 @@
   },
   "items": [
     {
-      "id": "arxiv:2611.32954",
-      "title": "LoomKV: Lossless KV Cache Compression from GPU Memory to SSD for LLM Serving",
-      "url": "https://arxiv.org/abs/2611.32954",
-      "category": "Systems",
+      "id": "hn:50609685",
+      "title": "GLM-5.4: Toward generalized coding with our first loop transformer",
+      "url": "https://z.ai/blog/glm-5.4",
+      "category": "LLM",
+      "published": "2026-11-23",
       "sources": [
-        "arxiv"
+        "hackernews"
       ],
-      "signals": {},
-      "links": {
-        "arxiv": "https://arxiv.org/abs/2611.32954"
+      "signals": {
+        "hn_points": 1174,
+        "hn_comments": 383
       },
-      "headline": "LoomKV는 BF16 KV cache를 원래 크기의 0.71로 무손실 압축해 tier와 GPU pool 용량을 모두 늘린다.",
-      "tldr": "KV cache offload 환경에서는 외부 tier 용량이 prefix 재사용을, GPU KV pool이 동시 처리 가능한 long request 수를 제한하는데, lossy 압축은 출력 자체를 바꿔 버린다. LoomKV는 BF16 high byte에 per-head 2-level 3-bit code를 적용한 무손실 압축을 수정하지 않은 엔진(LMCache+vLLM)의 tier와 GPU pool 양쪽에 붙였다. 그 결과 goodput이 최대 3.6x, TTFT가 최대 3.1x 개선됐다.",
+      "links": {
+        "hn": "https://news.ycombinator.com/item?id=50609685"
+      },
+      "headline": "Z.ai가 첫 loop transformer 기반 코딩 모델 GLM-5.4를 공개했다(제목 기준).",
+      "tldr": "원문을 가져오지 못해 제목만 보고 쓴 요약이다. Z.ai가 범용 코딩을 목표로 한 GLM-5.4를 발표했고, 이것이 자사 첫 loop transformer 모델이라고 한다.",
       "key_points": [
-        "BF16의 sign과 상위 7 exponent bit에 calibrated per-head 3-bit code를 적용하며, tier mode(TileStream)와 pool mode(FragPack + fused decode-attention kernel) 두 방식으로 동작한다.",
-        "BF16 KV는 0.71, FP8 KV는 0.85-0.87 크기로 압축되며, AgentX에서 LRU cliff 구간 기준 goodput 2.7-3.6x, mean TTFT 1.9-3.1x 감소를 보였고 pool mode는 GPU 토큰을 1.31-1.34x 더 수용한다.",
-        "용량이 이미 충분한 상황에서는 이득 없이 최대 2.2% throughput 손실만 생기며, tier mode는 bit-exact이고 pool mode는 FlashAttention-3 수준의 수치 정확도를 유지한다."
+        "핵심 아이디어: 제목상 블록을 반복 적용하는 loop transformer 구조를 GLM 계열에 처음 도입했다.",
+        "주요 결과: 공개된 수치나 benchmark 정보는 없다.",
+        "한계: 제목만 있어 구조, 규모, 성능은 확인할 수 없다."
       ],
-      "efficiency": "출력 변화 없이 KV 저장 용량을 약 1.4x 늘려 AI IDE trace에서 goodput을 tier mode 1.24x, pool mode 1.59x 끌어올린다.",
+      "efficiency": "loop 구조는 파라미터를 재사용해 effective depth를 늘리는 방식이지만, 이 모델의 효율 수치는 원문이 없어 알 수 없다.",
       "tags": [
-        "kv-cache",
-        "lossless-compression",
-        "llm-serving"
+        "looped-transformer",
+        "code-llm",
+        "glm"
       ]
     },
     {
-      "id": "arxiv:2611.31954",
-      "title": "Perception Is Enough, at the Right Scale: Scale-Adaptive Token Pruning for Vision-Language-Action Models",
-      "url": "https://arxiv.org/abs/2611.31954",
-      "category": "VLA",
+      "id": "hn:50543989",
+      "title": "Energy-Based Reasoners: 385x more efficient inference",
+      "url": "https://energy-based-reasoners.github.io/",
+      "category": "LLM",
+      "published": "2026-11-18",
       "sources": [
-        "arxiv"
+        "hackernews"
       ],
-      "signals": {},
-      "links": {
-        "arxiv": "https://arxiv.org/abs/2611.31954"
+      "signals": {
+        "hn_points": 317,
+        "hn_comments": 60
       },
-      "headline": "TauPrune-VLA는 perception temperature 하나로 token pruning 스케일을 조절해 VLA 추론을 최대 1.86x 가속한다.",
-      "tldr": "VLA는 연속된 시각 입력을 처리해야 해서 실시간 제어 비용이 크고, 고정된 semantic scale로 pruning하면 조작 단계마다 필요한 정보를 놓칠 수 있다. TauPrune-VLA는 training-free 방식으로, 내부 attention을 쓰지 않고 perceptual semantics만으로 토큰을 고르며 온도 τ를 온라인으로 조정한다. 그 결과 task 성공률을 baseline 수준으로 유지하면서 최대 1.86x 빨라졌다.",
+      "links": {
+        "hn": "https://news.ycombinator.com/item?id=50543989"
+      },
+      "headline": "Energy-Based Reasoner가 Sudoku-Extreme 99.9%를 달성하면서 inference compute는 345× 줄였다.",
+      "tldr": "looped reasoner에는 언제 멈추고 어떻게 개선할지 알려 주는 명시적 신호가 없다. EBR은 latent reasoning state 위에 energy function을 학습하고, loop 업데이트를 이 energy에 대한 gradient descent로 정의해 refine·stop·select에 모두 쓴다. 1.8M 파라미터로 기존 5–10M 모델들과 같거나 더 나은 성능을 냈다.",
       "key_points": [
-        "τ는 perceptual semantics의 추세에 따라 갱신되고, robot-state 변화와 action 크기가 조정 강도를 정하며, 연속 프레임 사이의 안정성을 이용해 pruning을 inference와 비동기로 실행한다.",
-        "여러 VLA 모델과 시뮬레이션 벤치마크에서 near-baseline 성공률을 유지하며 최대 1.86x inference speedup을 달성했다.",
-        "실제 로봇 플랫폼 2종에서도 검증했지만, 초록에 벤치마크별 성공률 수치는 나와 있지 않다."
+        "energy의 gradient로 state를 refine하고, gradient norm이 threshold 아래로 떨어지면 멈추며, 여러 trajectory 중 energy가 가장 낮은 답을 고른다. 학습에는 exploration-based training을 쓴다.",
+        "Sudoku-Extreme single-sample 99.4%, 5 samples 99.9%로 EqR(128 samples 99.8%)을 넘었고, EqR 대비 FLOPs가 345× 적다. adaptive stopping만으로도 fixed-depth EBR보다 FLOPs가 10.9× 적다.",
+        "Sudoku, Maze, N-Queens, Graph Coloring 같은 algorithmic reasoning benchmark에서만 검증했다. 페이지 제목은 385×인데 본문 수치는 345×다."
       ],
-      "efficiency": "retention index를 다음 policy 호출에 재사용해 pruning 오버헤드를 숨기며, 최대 1.86x 추론 가속을 얻는다.",
+      "efficiency": "EqR 최고 정확도에 iteration은 7×, sample은 43× 적게 써서 도달하고, 전체 inference FLOPs는 345× 줄였다. training compute는 비슷하다.",
+      "tags": [
+        "looped-models",
+        "energy-based-models",
+        "adaptive-compute",
+        "test-time-scaling"
+      ]
+    },
+    {
+      "id": "arxiv:2611.29897",
+      "title": "Motion Mamba 2.0: Autoregressive Diffusion Mamba for Long-Horizon Humanoid Control",
+      "url": "https://arxiv.org/abs/2611.29897",
+      "category": "VLA",
+      "published": "2026-11-24",
+      "sources": [
+        "hf_daily"
+      ],
+      "signals": {
+        "hf_upvotes": 194,
+        "github_stars": 29
+      },
+      "links": {
+        "arxiv": "https://arxiv.org/abs/2611.29897",
+        "hf": "https://huggingface.co/papers/2611.29897",
+        "code": "https://github.com/AIGeeksGroup/MotionMamba2.0"
+      },
+      "headline": "Motion Mamba 2.0이 휴머노이드 장기 모션 생성 latency를 RTX 4090에서 6.1× 줄였다.",
+      "tldr": "autoregressive diffusion 모션 생성은 attention cache가 제한돼 먼 과거를 보기 어렵고, 반복 denoising 때문에 추론 비용이 크다. 이 논문은 Mamba recurrent state, local attention, persistent content memory(PCM)를 결합하고, CUDA Graph와 fused kernel로 실행 경로를 최적화했다. Unitree G1 실機에서도 검증했다.",
+      "key_points": [
+        "PCM은 Mamba state에 압축된 모션 history, state 변화, text feature를 content slot으로 바꾼 뒤 local attention이 접근할 수 있게 한다.",
+        "median complete-window latency가 1685.35ms에서 276.14ms로 줄어 6.138× 빨라졌고, 출력은 동일하게 유지됐다. 최대 39.52s rollout에서 terminal control이 정확했다.",
+        "speedup은 RTX 4090과 테스트한 rollout 기준이며, 장기 평가는 retargeted HiPHI 데이터에서 했다."
+      ],
+      "efficiency": "CUDA Graph replay, fused kernel, 실행 흐름 단순화로 출력을 바꾸지 않고 추론 latency를 약 6.1× 줄였다.",
+      "tags": [
+        "mamba",
+        "motion-generation",
+        "humanoid",
+        "kernel-optimization"
+      ]
+    },
+    {
+      "id": "arxiv:2611.18397",
+      "title": "Gamer: A Generalist Vision-Language-Action Foundation Model for Long-Horizon Real-Time Game Agent",
+      "url": "https://arxiv.org/abs/2611.18397",
+      "category": "VLA",
+      "published": "2026-11-16",
+      "sources": [
+        "hf_daily"
+      ],
+      "signals": {
+        "hf_upvotes": 165,
+        "github_stars": 1517
+      },
+      "links": {
+        "arxiv": "https://arxiv.org/abs/2611.18397",
+        "hf": "https://huggingface.co/papers/2611.18397",
+        "code": "https://github.com/RainBowLuoCS/Gamer"
+      },
+      "headline": "Gamer는 키보드·마우스 trajectory 수만 시간으로 학습한 실시간 게임용 generalist VLA다.",
+      "tldr": "복잡한 2D·3D 환경에서 장기 과제를 수행하는 generalist agent를 목표로 한다. 수만 시간 분량의 device-level 입력 데이터로 continued pre-training을 하고, sparse-thinking instruction tuning과 multi-turn RL을 거친 뒤, cloud-edge 추론 엔진으로 서빙한다. 여러 3D open-world 게임에서 숙련 플레이어에 견줄 만한 성능을 보였다고 한다.",
+      "key_points": [
+        "sparse-thinking instruction tuning으로 불필요한 reasoning 연산을 줄이면서 복잡한 결정에 필요한 추론은 유지한다.",
+        "주요 결과는 3D 게임에서의 일반화와 2D benchmark에서의 경쟁력 있는 성능이지만, 초록에 구체적 수치는 없다.",
+        "multi-turn RL은 유한한 context, rollout 오류 누적, sparse reward 문제를 다루도록 설계됐다. 평가는 게임 환경 중심이다."
+      ],
+      "efficiency": "sparse thinking으로 reasoning 연산을 줄이고, cloud-edge 엔진으로 동시 서빙, unbounded context, 낮은 latency를 지원한다고 하지만 정량 수치는 제시되지 않았다.",
       "tags": [
         "vla",
-        "visual-token-pruning",
-        "training-free"
+        "game-agent",
+        "sparse-reasoning",
+        "serving"
       ]
     },
     {
-      "id": "arxiv:2611.32269",
-      "title": "Pando: Noise-Coupled Parallel Draft Trees for Efficient Edge Speculative Decoding",
-      "url": "https://arxiv.org/abs/2611.32269",
-      "category": "LLM",
-      "sources": [
-        "arxiv"
-      ],
-      "signals": {},
-      "links": {
-        "arxiv": "https://arxiv.org/abs/2611.32269"
-      },
-      "headline": "Pando는 parallel drafter 위에 noise-coupled draft tree를 쌓아 edge에서 AR 대비 5.3x 가속한다.",
-      "tldr": "DFlash, DSpark 같은 parallel drafter는 학습 시 block size에 묶인 draft chain만 써서, verification에 쓸 수 있는 연산 예산 대부분을 놀리고 있다. Pando는 dynamic draft tree를 만들고, target의 sampling noise를 미리 뽑아 그 noise 기준으로 branch 순위를 매기는 noise-coupled pruning을 도입했다. edge 기기에서 16-node tree가 AR 대비 5.3x 속도와 4.2x 에너지 절감을 달성했다.",
-      "key_points": [
-        "Noise coupling은 무손실이고 재학습이나 추가 forward pass가 필요 없으며, Qwen3-8B에서 acceptance length를 최대 8.4% 늘린다.",
-        "DSpark의 공개 chain보다 25% 빠르고, EAGLE-3 tree보다 27% 빠르면서 에너지 효율은 72% 높다.",
-        "최적 구성도 모든 edge 기기에서 여전히 memory-bound여서, 연산 성능을 더 늘려도 latency는 줄지 않는다."
-      ],
-      "efficiency": "memory-bound한 edge 추론에서 놀고 있는 연산을 활용해 AR 대비 속도 5.3x, 에너지 4.2x 효율을 얻는다.",
-      "tags": [
-        "speculative-decoding",
-        "edge-inference",
-        "draft-tree"
-      ]
-    },
-    {
-      "id": "arxiv:2611.33080",
-      "title": "Shifter Quantization: Compact Representations for Native Integer Computation",
-      "url": "https://arxiv.org/abs/2611.33080",
-      "category": "LLM",
-      "sources": [
-        "arxiv"
-      ],
-      "signals": {},
-      "links": {
-        "arxiv": "https://arxiv.org/abs/2611.33080"
-      },
-      "headline": "Shifter Quantization은 shared bit를 이어 붙이고 shift해 groupwise 양자화를 native integer MMA로 돌린다.",
-      "tldr": "groupwise quantization은 low-bit 정확도에 유리하지만, 그룹 단위 scale 때문에 integer MMA가 전체 dot product를 한 번에 처리하지 못한다. SQ는 shared bit를 덧붙이고 shift해 native-width integer operand를 재구성하며, 변형인 SHI는 INT4 kernel을 그대로 활용한다. 그 결과 2/4/8-bit 전 구간에서 품질(KL)과 prefill 속도가 모두 개선됐다.",
-      "key_points": [
-        "shared bit를 append/shift해 grouping을 유지하면서도 표준 integer MMA가 dot product 전체를 처리하게 만든다.",
-        "SQ2/SHI2는 llama.cpp Q2_K 대비 4,096-token prefill throughput이 2.71-3.77x이고, SQ4는 NInfer 대비 1.43-2.47x 빠르면서 KL이 24-40% 낮다.",
-        "SQ8은 vLLM online FP8 대비 batch-one prefill이 27.4% 빠르고 KL이 72.7% 낮지만, 비교 대상은 baseline별로 다르다."
-      ],
-      "efficiency": "정확도를 유지하거나 개선하면서 low-bit LLM의 prefill throughput을 최대 3.77x 높인다.",
-      "tags": [
-        "quantization",
-        "integer-kernels",
-        "llm-inference"
-      ]
-    },
-    {
-      "id": "arxiv:2611.32096",
-      "title": "Rethinking Post-Training Quantization for Large Vision-Language Models",
-      "url": "https://arxiv.org/abs/2611.32096",
+      "id": "arxiv:2611.24738",
+      "title": "Jeveration: System One Models Now Generate",
+      "url": "https://arxiv.org/abs/2611.24738",
       "category": "VLM",
+      "published": "2026-11-19",
       "sources": [
-        "arxiv"
+        "hf_daily"
       ],
-      "signals": {},
-      "links": {
-        "arxiv": "https://arxiv.org/abs/2611.32096"
+      "signals": {
+        "hf_upvotes": 156,
+        "github_stars": 166
       },
-      "headline": "RRQ는 local Hadamard와 group quantization을 결합해 LVLM W4A4에서 96% 이상 성능을 유지한다.",
-      "tldr": "LVLM PTQ는 calibration이 정교해져도 low-bit weight-activation 양자화에서 성능이 크게 떨어진다. 저자들은 원인이 소수 outlier가 per-channel/per-token range를 지배해 대부분의 값이 0으로 매핑되는 데 있다고 분석했다. 이에 calibration 개선 대신 표현 방식 자체를 바꾼 RRQ를 제안해 W4A4에서 baseline을 크게 앞섰다.",
+      "links": {
+        "arxiv": "https://arxiv.org/abs/2611.24738",
+        "hf": "https://huggingface.co/papers/2611.24738",
+        "code": "https://github.com/Carol-lyh/Jeveration"
+      },
+      "headline": "Jeveration은 frozen VLM으로 512x512 이미지를 한 번의 forward pass, 78ms 만에 생성한다.",
+      "tldr": "System One 방식의 병렬 예측을 이미지 생성으로 확장한 연구다. 모든 위치를 공유 random state에 condition해 병렬 예측이 하나의 일관된 이미지로 모이게 하고, 먼저 discrete image code 분포를 학습해 single-pass 생성을 유도한다. 하나의 checkpoint로 text-to-image, image-to-image, dense prediction을 모두 처리한다.",
       "key_points": [
-        "local Hadamard transform으로 outlier를 분산시킨 뒤 group quantization을 적용하고, group-aware execution으로 효율적으로 실행한다.",
-        "W4A4에서 8B 모델은 full-precision 성능의 96% 이상, 32B 모델은 99% 이상을 유지한 반면 baseline은 8% 미만에 그쳤다.",
-        "8개 multimodal task에서 평가했고, 추론 시간과 메모리 절감 폭은 초록에 수치로 나와 있지 않다."
+        "frozen VLM의 visual-semantic 지식을 재활용하고, shared random state로 매번 다르지만 coherent한 이미지를 생성한다.",
+        "512x512 생성에 78ms가 걸려 기존 unified model보다 최대 122× 빠르며, 화질은 경쟁력 있는 수준이다.",
+        "직접 이미지 supervision만 주면 모델이 random state를 무시하기 때문에 discrete code 분포를 먼저 학습하는 단계가 필요하다."
       ],
-      "efficiency": "LVLM을 W4A4로 실사용 가능하게 해 추론 시간과 메모리를 줄이지만, 절감 폭은 수치로 제시되지 않았다.",
+      "efficiency": "iterative diffusion이나 AR decoding 없이 single forward pass로 생성해 기존 unified model 대비 최대 122× 빠르다.",
       "tags": [
-        "quantization",
+        "single-step-generation",
+        "unified-model",
         "vlm",
-        "post-training-quantization"
+        "image-generation"
       ]
     }
   ]
