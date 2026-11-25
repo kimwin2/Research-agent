@@ -1,14 +1,14 @@
 {
   "date": "2026-11-25",
-  "generated_at": "2026-11-25T14:00:20+00:00",
+  "generated_at": "2026-11-25T14:13:05+00:00",
   "candidates": {
     "hackernews": 30,
     "hf_daily": 60,
     "arxiv": 20
   },
   "usage": {
-    "input_tokens": 28558,
-    "output_tokens": 3928,
+    "input_tokens": 26477,
+    "output_tokens": 3803,
     "calls": 2,
     "models": [
       "claude-opus-5-5"
@@ -31,19 +31,58 @@
       "links": {
         "hn": "https://news.ycombinator.com/item?id=50543989"
       },
-      "headline": "looped reasoner를 energy 기반 gradient descent로 바꿔 Sudoku-Extreme 99.9%를 345× 적은 inference compute로 달성",
-      "tldr": "기존 looped/recurrent reasoner는 진행 정도를 측정할 명시적 신호가 없어 언제 멈출지 정하기 어렵습니다. EBR은 latent reasoning state에 대한 energy function을 학습하고, loop update를 energy gradient descent로 정의해 refinement, stopping, 후보 selection을 한 번에 해결합니다. 1.8M 파라미터로 Sudoku-Extreme 99.9%를 기록했으며, 차선 모델 대비 inference compute가 345× 적습니다.",
+      "media": {
+        "type": "image",
+        "url": "https://energy-based-reasoners.github.io/static/images/ebr_landscape_abc_v1.png"
+      },
+      "headline": "looped reasoner를 energy 위 gradient descent로 바꾼 EBR이 Sudoku-Extreme 99.9%를 345× 적은 inference compute로 달성했다.",
+      "tldr": "기존 looped reasoning 모델에는 진행 상황을 재는 명시적 척도가 없어서 언제 멈추고 어떻게 개선할지 정하기 어렵다. EBR은 latent reasoning state 위에 energy function을 학습하고, loop 업데이트를 이 energy에 대한 gradient descent로 정의한다. 그래서 gradient로 상태를 refine하고, gradient norm으로 stop 시점을 정하고, energy가 가장 낮은 후보를 고른다. 1.8M 파라미터로 4개 algorithmic reasoning benchmark에서 기존 recurrent reasoner와 같거나 더 나은 성능을 냈다.",
       "key_points": [
-        "energy E(z;x)로 상태를 평가하고, gradient로 상태를 refine하며, gradient norm이 threshold 아래로 떨어지면 멈추고, 여러 후보 중 energy가 가장 낮은 것을 고르며, 학습 시 exploration-based training으로 energy landscape를 다듬습니다.",
-        "1.8M 파라미터로 single sample 기준 Sudoku-Extreme 99.4%, Maze-Hard 87.4%를 기록했고, 5 samples로는 각각 99.9%와 88.3%에 도달해 최대 128 samples를 쓰는 5–7M급 baseline보다 앞섭니다.",
-        "검증은 Sudoku, Maze, N-Queens, Graph Coloring 같은 algorithmic reasoning benchmark 4종에서만 이뤄졌고, HN 제목의 '385x'와 달리 본문 수치는 345×입니다."
+        "energy 지형을 더 넓은 상태 범위에서 다듬고 추가 mode를 찾도록 exploration-based training을 쓰며, energy gradient가 threshold 아래로 떨어지면 해당 trajectory를 멈추는 adaptive stopping을 적용한다.",
+        "Sudoku-Extreme에서 single-sample 99.4%, 5 samples 99.9%, Maze-Hard에서 87.4%/88.3%를 기록했고, 5–10M 파라미터 baseline(최대 128 samples)보다 앞선다.",
+        "Sudoku, Maze, N-Queens, Graph Coloring 같은 algorithmic/퍼즐 benchmark에서만 검증했으며, 언어 모델 규모의 reasoning에 적용되는지는 나와 있지 않다(제목의 385×와 달리 본문 수치는 345×)."
       ],
-      "efficiency": "adaptive stopping으로 fixed-depth EBR보다 FLOPs가 10.9× 줄고, EqR와 비교하면 345× 적은 FLOPs로 더 높은 정확도를 내며, EqR 최고 정확도에 도달하는 데 iteration은 7×, sample은 43× 적게 듭니다. training compute는 기존 모델과 비슷합니다.",
+      "efficiency": "adaptive stopping으로 fixed-depth EBR보다 FLOPs가 10.9× 줄고 EqR 대비 345× 적은 FLOPs로 더 높은 정확도를 내며, EqR 최고 정확도에는 7× 적은 iteration, 43× 적은 sample로 도달한다.",
       "tags": [
-        "energy-based-model",
-        "looped-reasoning",
+        "looped-models",
+        "energy-based-models",
         "adaptive-compute",
         "test-time-scaling"
+      ]
+    },
+    {
+      "id": "hn:50603845",
+      "title": "A Beginner's Guide to Local AI with Inkling, Qwen, and Unsloth",
+      "url": "https://www.gpupartner.com/blog/beginners-guide-local-ai-inkling-qwen-unsloth",
+      "category": "Systems",
+      "published": "2026-11-22",
+      "sources": [
+        "hackernews"
+      ],
+      "signals": {
+        "hn_points": 773,
+        "hn_comments": 315
+      },
+      "links": {
+        "hn": "https://news.ycombinator.com/item?id=50603845"
+      },
+      "media": {
+        "type": "image",
+        "url": "https://www.gpupartner.com/blog/beginners-guide-local-ai-inkling-qwen-unsloth/opengraph-image-17m7t5?6653c98c6cd84ba6"
+      },
+      "headline": "Unsloth Desktop과 4-bit quantized Qwen3.8-27B로 RTX 5090 한 장에서 128K context 로컬 AI를 띄우는 입문 가이드.",
+      "tldr": "cloud LLM의 비용, 사용량 제한, 프라이버시 문제를 피하려고 Windows PC에 로컬 ChatGPT 대체재를 구축하는 초보자용 가이드다. Unsloth Desktop을 설치하고, VRAM에 맞는 quantized 모델을 받아 context 크기를 정한 뒤 LAN 접근을 켜는 순서로 설명한다.",
+      "key_points": [
+        "VRAM 구간별로 추천 모델과 quant 수준을 정리했다: 8–12GB는 9B–12B Q4, 16GB는 MoE 모델(Qwen3.6-35B 등), 32GB+는 Qwen3.8-27B UD-Q4_K_XL/Q6_K에 64K–128K context.",
+        "full precision Qwen 모델은 약 56GB라 소비자 GPU에 올라가지 않지만, 4-bit에서는 모델과 128K context가 32GB 카드에 여유 있게 들어간다.",
+        "MoE 모델은 일부 weight를 system RAM에 두고 돌릴 수 있어서, 자체 계산기 기준 RTX 5060 Ti 16GB에서 Qwen3.6-35B가 약 47 tok/s로 추정된다. 다만 이는 실측이 아닌 추정치이고 quantization에 따른 품질 저하 수치도 없다."
+      ],
+      "efficiency": "weight quantization(Q8→Q4)으로 56GB급 모델을 소비자 GPU에 올리고, MoE offload로 16GB 카드에서도 35B 모델을 실용 속도로 돌릴 수 있다는 실전 가이드다.",
+      "tags": [
+        "local-inference",
+        "quantization",
+        "moe-offload",
+        "consumer-gpu"
       ]
     },
     {
@@ -64,19 +103,23 @@
         "hf": "https://huggingface.co/papers/2611.29897",
         "code": "https://github.com/AIGeeksGroup/MotionMamba2.0"
       },
-      "headline": "Mamba 기반 autoregressive diffusion으로 39.52초 long-horizon 모션을 생성하고 latency를 6.1× 단축",
-      "tldr": "autoregressive diffusion 모션 생성은 attention cache 크기가 제한돼 먼 과거를 참조하기 어렵고, 반복 denoising 때문에 inference 비용도 큽니다. Motion Mamba 2.0은 local attention, resumable recurrent state, persistent content memory(PCM)를 결합하고, CUDA Graph와 fused kernel로 실행 경로를 최적화했습니다. 39.52초 rollout에서 정확한 terminal control을 보였고, Unitree G1 실기에서도 동작을 시연했습니다.",
+      "media": {
+        "type": "video",
+        "url": "https://cdn-uploads.huggingface.co/production/uploads/64ec877bb93654d4ca5c92e9/ojKF20K9uqgjIM4sGJPO6.mp4"
+      },
+      "headline": "Mamba 기반 autoregressive diffusion 모션 모델의 실행 최적화로 RTX 4090 latency를 출력 변화 없이 6.1× 줄였다.",
+      "tldr": "autoregressive diffusion 방식의 모션 생성은 attention cache 크기가 제한돼 먼 과거를 참조하기 어렵고, 반복 denoising 때문에 inference 비용이 크다. Motion Mamba 2.0은 local attention, resumable recurrent state, persistent content memory(PCM)를 결합하고 CUDA Graph와 fused kernel로 실행 경로를 최적화했다. 최대 39.52초 rollout에서 정확한 terminal control을 보였고, Unitree G1 실기에서도 검증했다.",
       "key_points": [
-        "PCM은 Mamba recurrent state에 압축된 모션 history, state 변화, text feature를 local attention이 접근할 수 있는 content slot으로 동적으로 변환합니다.",
-        "RTX 4090에서 median complete-window latency가 1685.35 ms에서 276.14 ms로 줄어 median paired speedup 6.138×를 기록했으며, 테스트한 rollout에서는 출력이 동일하게 유지됐습니다.",
-        "short-horizon 성능(BONES Seed, HumanML3D)은 '강함'이라고만 서술돼 있고 abstract에 구체적인 수치는 없습니다."
+        "PCM은 Mamba recurrent state에 압축된 모션 history와 state 변화량, text 조건 feature를 동적으로 갱신되는 content slot으로 바꿔 local attention이 참조할 수 있게 한다.",
+        "RTX 4090에서 median complete-window latency가 1685.35ms에서 276.14ms로 줄었고(median paired speedup 6.138×), 테스트한 rollout에서는 출력과 committed state가 동일했다.",
+        "속도 향상은 이 아키텍처에 맞춘 실행 스킴의 결과이고, 출력 동일성은 테스트한 rollout 범위에서만 확인됐다."
       ],
-      "efficiency": "출력을 바꾸지 않고 CUDA Graph replay, fused kernel, 실행 흐름 단순화만으로 latency를 약 6.1× 줄였으므로, diffusion 기반 실시간 제어에서 시스템 수준 최적화가 갖는 효과를 보여 줍니다.",
+      "efficiency": "CUDA Graph replay, fused kernel, 실행 흐름 단순화만으로 모델 출력을 바꾸지 않고 diffusion 모션 생성 latency를 6.1× 줄였다.",
       "tags": [
         "mamba",
         "motion-diffusion",
         "humanoid-control",
-        "inference-optimization"
+        "kernel-optimization"
       ]
     },
     {
@@ -97,14 +140,18 @@
         "hf": "https://huggingface.co/papers/2611.18397",
         "code": "https://github.com/RainBowLuoCS/Gamer"
       },
-      "headline": "수만 시간 분량의 키보드·마우스 데이터로 학습한 VLA 게임 에이전트 Gamer가 3D 오픈월드에서 숙련자 수준 효율을 보임",
-      "tldr": "Gamer는 2D GUI와 3D 시뮬레이션 세계를 모두 다루는 long-horizon generalist VLA agent입니다. 수만 시간의 device-level 키보드·마우스 trajectory로 continued pre-training을 한 뒤, sparse-thinking instruction tuning과 안정적인 multi-turn RL을 적용했습니다. 여러 3D open-world 게임에서 숙련 플레이어에 견줄 만한 일반화 성능과 조작 효율을 보였다고 주장합니다.",
+      "media": {
+        "type": "video",
+        "url": "https://cdn-uploads.huggingface.co/production/uploads/6727a4d03b1ef8fb59b37535/NSH4bAjU7NcKoNhadyq3t.mp4"
+      },
+      "headline": "수만 시간 분량의 키보드·마우스 궤적으로 학습한 VLA Gamer가 3D open-world 게임에서 숙련 플레이어급 효율을 보였다.",
+      "tldr": "Gamer는 2D GUI와 3D 시뮬레이션 세계를 함께 다루는 long-horizon 범용 VLA 에이전트다. device-level 입력 데이터로 continued pre-training을 하고, sparse-thinking instruction tuning과 안정적인 multi-turn RL을 거친 뒤 cloud-edge inference 엔진으로 서빙한다.",
       "key_points": [
-        "sparse-thinking instruction tuning으로 꼭 필요한 reasoning만 남기고 중복 연산을 줄였으며, multi-turn RL로 유한한 context, 누적되는 rollout 오류, sparse reward 문제를 다룹니다.",
-        "3D 게임에서는 숙련자 수준의 효율을, 2D 게임 benchmark에서는 competitive한 결과를 보였다고 하지만 abstract에 구체적인 수치는 없습니다.",
-        "단순 반복적인 키보드·마우스 trajectory도 데이터와 학습 알고리즘을 확장하면 큰 이득을 낼 수 있다는 것이 핵심 주장입니다."
+        "sparse-thinking instruction tuning은 복잡한 결정에 필요한 reasoning은 남기면서 중복 계산을 크게 줄인다고 주장한다.",
+        "multi-turn RL은 유한한 context window, 누적되는 rollout 오류, sparse reward 문제를 다루고, inference 엔진은 무제한 context 실행과 다수 환경 동시 서빙을 지원한다.",
+        "abstract에는 구체적인 성능 수치나 latency 수치가 없고, '숙련 플레이어 수준', 'competitive' 같은 정성적 표현만 있다."
       ],
-      "efficiency": "sparse thinking으로 reasoning 연산을 줄이고, cloud-edge inference engine으로 여러 환경을 동시에 서빙하며 unbounded context와 낮은 latency를 지원한다고 하지만 감소 폭은 수치로 제시되지 않았습니다.",
+      "efficiency": "sparse thinking으로 reasoning 토큰 낭비를 줄이고 cloud-edge 엔진으로 실시간 latency를 낮췄다고 하지만, 절감 폭은 공개되지 않았다.",
       "tags": [
         "vla",
         "game-agent",
@@ -113,66 +160,35 @@
       ]
     },
     {
-      "id": "arxiv:2611.24738",
-      "title": "Jeveration: System One Models Now Generate",
-      "url": "https://arxiv.org/abs/2611.24738",
-      "category": "VLM",
-      "published": "2026-11-19",
+      "id": "arxiv:2611.22115",
+      "title": "TeleChat to Xing4: Advancing Frontier Agentic Models on Domestic Chips and Frameworks",
+      "url": "https://arxiv.org/abs/2611.22115",
+      "category": "LLM",
+      "published": "2026-11-18",
       "sources": [
         "hf_daily"
       ],
       "signals": {
-        "hf_upvotes": 156,
-        "github_stars": 166
+        "hf_upvotes": 168
       },
       "links": {
-        "arxiv": "https://arxiv.org/abs/2611.24738",
-        "hf": "https://huggingface.co/papers/2611.24738",
-        "code": "https://github.com/Carol-lyh/Jeveration"
+        "arxiv": "https://arxiv.org/abs/2611.22115",
+        "hf": "https://huggingface.co/papers/2611.22115"
       },
-      "headline": "frozen VLM을 활용한 single forward pass 이미지 생성으로 512×512 이미지를 78 ms에 생성하며 최대 122× 빠름",
-      "tldr": "Jev 같은 System One 모델의 병렬 예측 방식을 이미지 생성으로 확장했으며, 핵심 과제는 병렬 예측 결과가 전체적으로 일관된 이미지로 수렴하게 만드는 것입니다. 모든 위치에 공유 random state를 조건으로 주고, 모델이 이 state를 무시하지 않도록 discrete image code 분포를 먼저 학습해 생성을 유도합니다. 하나의 checkpoint로 T2I, I2I, dense prediction을 모두 1-pass로 처리합니다.",
+      "media": null,
+      "headline": "TeleChat 계열 Xing 4는 Ascend 910C 8,192장에서 285B 모델을 pretraining한 국산 칩 기반 학습 스택 보고서다.",
+      "tldr": "Xing 4는 Ascend 칩과 MindSpore에서 아키텍처와 학습 인프라를 함께 설계한 LLM 시리즈다. sparse activation, attention 설계, depth/width, speculative decoding이 모델 용량과 연산·메모리 접근·실행 오버헤드 사이에서 어떻게 균형을 잡는지 분석하고, agent post-training용 플랫폼 TeleGym을 소개한다.",
       "key_points": [
-        "frozen VLM의 visual-semantic 지식을 재활용하고, 공유 random state로 병렬 예측을 조율해 샘플마다 서로 다르면서도 일관된 이미지를 얻습니다.",
-        "512×512 이미지를 78 ms에 생성해 기존 unified model보다 최대 122× 빠르며, 이미지 품질과 dense prediction 성능은 competitive하다고 보고합니다.",
-        "품질은 'competitive'라고만 서술돼 있고 abstract에 FID 같은 구체적인 품질 수치는 없습니다."
+        "MindSpore HyperParallel 위에서 topology-aware hybrid sharding, 분산 optimizer 실행, long-sequence activation memory 관리, CPU affinity와 core isolation을 조합했다.",
+        "TeleGym은 disaggregated asynchronous execution, bounded oversampling, partial rollout으로 작업마다 길이가 다른 agent rollout을 처리하면서 policy 업데이트 사이에도 trajectory 연속성을 유지한다.",
+        "abstract에는 benchmark 성능이나 throughput/MFU 수치가 없어 효율 향상 폭을 확인할 수 없다."
       ],
-      "efficiency": "iterative decoding이나 denoising 없이 single forward pass로 생성해 unified model 대비 최대 122× 빠르게 이미지를 만듭니다.",
+      "efficiency": "NVIDIA가 아닌 Ascend 클러스터에서 285B MoE급 학습과 비동기 agentic RL을 돌리는 시스템 설계 참고자료지만, 정량적인 효율 개선 수치는 제시하지 않았다.",
       "tags": [
-        "single-pass-generation",
-        "unified-model",
-        "image-generation",
-        "frozen-vlm"
-      ]
-    },
-    {
-      "id": "hn:50548021",
-      "title": "Seven new models at scalable price-performance",
-      "url": "https://microsoft.ai/news/microsoft-ignite-2026/",
-      "category": "LLM",
-      "published": "2026-11-18",
-      "sources": [
-        "hackernews"
-      ],
-      "signals": {
-        "hn_points": 607,
-        "hn_comments": 377
-      },
-      "links": {
-        "hn": "https://news.ycombinator.com/item?id=50548021"
-      },
-      "headline": "Microsoft MAI가 경쟁 모델 대비 가격을 크게 낮췄다고 주장하는 신규 모델 7종을 공개",
-      "tldr": "상시 구동하는 agent 비용을 겨냥해 MAI가 cyber, code, image, realtime, transcription, decision 영역의 모델 7종을 공개했습니다. MAI Code 2는 GPT-6.1 Sol 코딩 품질의 98%를 약 40% 가격에, Opus 5.5 성능의 96%를 5% 가격에 제공한다고 주장합니다. 2세대 accelerator Maia 200은 와트당 토큰 처리량이 1.7× 높다고 밝혔습니다.",
-      "key_points": [
-        "MAI Cyber 2 Flash는 CyberGym-E2E에서 GPT-6 Astra보다 높은 품질을 task당 비용 2% 미만으로 내고, Decision 1.1은 GPT-6.1 Sol보다 50× 빠르고 79× 저렴하다고 주장합니다.",
-        "MAI Image 2.7은 Artificial Analysis 이미지 편집 부문 1위이며 GPT Image 2.6 Sunburst보다 1/5 가격이라고 하고, MAI Realtime 1은 오디오 1분당 $0.01부터 시작합니다.",
-        "모두 벤더 발표 자료의 주장이며 독립 검증이나 구체적인 평가 조건은 제시되지 않았습니다."
-      ],
-      "efficiency": "주장대로라면 frontier 모델 대비 비용이 2–60% 수준으로 내려가고(모델별로 상이), Maia 200은 와트당 토큰 처리량이 1.7× 높습니다.",
-      "tags": [
-        "model-release",
-        "price-performance",
-        "ai-accelerator"
+        "ascend",
+        "distributed-training",
+        "agentic-rl",
+        "speculative-decoding"
       ]
     }
   ]
