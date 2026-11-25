@@ -1,0 +1,106 @@
+:root {
+  --bg: #fbfaf8;
+  --surface: #ffffff;
+  --text: #1c1b19;
+  --muted: #6b6860;
+  --line: #e7e4dd;
+  --accent: #b4532a;
+  --eff-bg: #f4f1ea;
+  --llm: #2f5fd0;
+  --vlm: #8442c9;
+  --vla: #0f7f6b;
+  --systems: #a8620a;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #151412;
+    --surface: #1d1c19;
+    --text: #ece9e2;
+    --muted: #9c988d;
+    --line: #2e2c28;
+    --accent: #e88a5c;
+    --eff-bg: #24221e;
+    --llm: #86a8ff;
+    --vlm: #c398f5;
+    --vla: #56c9b2;
+    --systems: #e3a94f;
+  }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 16px/1.7 Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo",
+    "Noto Sans KR", "Malgun Gothic", "Segoe UI", sans-serif;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+a { color: inherit; text-decoration-color: var(--line); text-underline-offset: 3px; }
+a:hover { color: var(--accent); text-decoration-color: currentColor; }
+
+header.site, main, footer.site { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+header.site {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+  padding-top: 28px; padding-bottom: 14px; border-bottom: 1px solid var(--line);
+}
+.brand { font-weight: 800; font-size: 18px; letter-spacing: -0.02em; text-decoration: none; }
+header.site nav { display: flex; gap: 16px; font-size: 14px; color: var(--muted); }
+header.site nav a { text-decoration: none; }
+
+.day { padding: 36px 0 8px; }
+.day h1 { margin: 0; font-size: 30px; line-height: 1.25; letter-spacing: -0.03em; }
+.tagline { margin: 0 0 6px; color: var(--muted); font-size: 14px; }
+
+.item { padding: 30px 0; border-bottom: 1px solid var(--line); }
+.meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+.num { font-variant-numeric: tabular-nums; font-weight: 700; color: var(--text); }
+.cat {
+  display: inline-block; padding: 1px 8px; border: 1px solid currentColor; border-radius: 999px;
+  font-size: 11.5px; font-weight: 700; letter-spacing: 0.04em; line-height: 1.6;
+}
+.cat-llm { color: var(--llm); }
+.cat-vlm { color: var(--vlm); }
+.cat-vla { color: var(--vla); }
+.cat-systems { color: var(--systems); }
+
+.item h2 { margin: 10px 0 0; font-size: 20px; line-height: 1.4; letter-spacing: -0.02em; }
+.item h2 a { text-decoration: none; }
+.headline { margin: 8px 0 0; font-size: 17px; font-weight: 600; color: var(--accent); }
+.tldr { margin: 12px 0 0; }
+.tldr b, .eff b {
+  margin-right: 6px; font-size: 12px; letter-spacing: 0.05em; color: var(--muted);
+}
+.points { margin: 12px 0 0; padding-left: 20px; }
+.points li { margin: 4px 0; }
+.points li::marker { color: var(--muted); }
+.eff { margin: 14px 0 0; padding: 10px 14px; background: var(--eff-bg); border-radius: 8px; font-size: 15px; }
+.foot {
+  display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 16px;
+  margin-top: 14px; font-size: 13px; color: var(--muted);
+}
+.tags, .links { display: flex; flex-wrap: wrap; gap: 4px 12px; }
+
+.pager { display: flex; justify-content: space-between; padding: 24px 0; font-size: 14px; color: var(--muted); }
+.pager a { text-decoration: none; }
+
+h2.section {
+  margin: 32px 0 0; padding-bottom: 8px; border-bottom: 1px solid var(--line);
+  font-size: 13px; letter-spacing: 0.05em; color: var(--muted);
+}
+.past { padding: 18px 0; border-bottom: 1px solid var(--line); }
+.past h3 { margin: 0 0 6px; font-size: 16px; }
+.past h3 a { text-decoration: none; }
+.past ul { margin: 0; padding: 0; list-style: none; font-size: 14.5px; color: var(--muted); }
+.past li { display: flex; gap: 10px; align-items: baseline; margin: 5px 0; }
+.past .cat { flex: none; min-width: 52px; text-align: center; font-size: 10.5px; }
+
+footer.site { padding-top: 28px; padding-bottom: 48px; font-size: 13px; color: var(--muted); }
+
+@media (max-width: 520px) {
+  .day h1 { font-size: 25px; }
+  .item h2 { font-size: 18px; }
+  .headline { font-size: 16px; }
+}

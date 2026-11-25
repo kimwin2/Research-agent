@@ -1,0 +1,98 @@
+name: Daily digest
+
+on:
+  schedule:
+    - cron: "17 22 * * *" # every day 07:17 KST (22:17 UTC)
+  workflow_dispatch:
+    inputs:
+      force:
+        description: "Regenerate today's digest even if it already exists"
+        type: boolean
+        default: false
+  push: # code or data changed: rebuild and redeploy the site (no Claude call)
+    paths:
+      - "agent/**"
+      - "data/**"
+      - "requirements.txt"
+      - ".github/workflows/daily-digest.yml"
+
+permissions:
+  contents: write # commit the new digest JSON
+  pages: write
+  id-token: write
+
+concurrency:
+  group: daily-digest
+  cancel-in-progress: false
+
+jobs:
+  build:
+    # Schedules only run on the default branch; keep pushes and manual runs consistent with that.
+    if: github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      # Set ONE of these two repository secrets (see README).
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      # Optional repository variables; empty means "use the default".
+      CLAUDE_MODEL: ${{ vars.CLAUDE_MODEL }}
+      DIGEST_ITEMS: ${{ vars.DIGEST_ITEMS }}
+      DIGEST_LANGUAGE: ${{ vars.DIGEST_LANGUAGE }}
+      SITE_TITLE: ${{ vars.SITE_TITLE }}
+      SITE_TAGLINE: ${{ vars.SITE_TAGLINE }}
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Unit tests
+        run: python -m unittest discover -s tests -q
+
+      - name: Install Claude Code CLI (only for the subscription token)
+        if: github.event_name != 'push' && env.ANTHROPIC_API_KEY == '' && env.CLAUDE_CODE_OAUTH_TOKEN != ''
+        run: npm install -g @anthropic-ai/claude-code
+
+      - name: Generate today's digest
+        if: github.event_name != 'push'
+        run: python -m agent.digest ${{ inputs.force && '--force' || '' }}
+
+      - name: Commit the digest
+        if: github.event_name != 'push'
+        run: |
+          git add data/digests
+          if git diff --cached --quiet; then
+            echo "No new digest to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "digest: $(TZ=Asia/Seoul date +%F)"
+          git push
+
+      - id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Build the site
+        env:
+          SITE_URL: ${{ steps.pages.outputs.base_url }}
+        run: python -m agent.site
+
+      - uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

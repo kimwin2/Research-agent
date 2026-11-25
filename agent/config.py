@@ -1,0 +1,131 @@
+"""Settings for the daily digest. Everything is overridable through environment variables."""
+
+from __future__ import annotations
+
+import os
+from pathlib import Path
+from zoneinfo import ZoneInfo
+
+ROOT = Path(__file__).resolve().parent.parent
+DIGEST_DIR = ROOT / "data" / "digests"
+SITE_DIR = ROOT / "_site"
+
+
+def _int(name: str, default: int) -> int:
+    value = os.environ.get(name, "").strip()
+    return int(value) if value else default
+
+
+# --- What to publish -------------------------------------------------------
+ITEMS_PER_DAY = _int("DIGEST_ITEMS", 5)
+LANGUAGE = os.environ.get("DIGEST_LANGUAGE", "").strip() or "Korean"
+TIMEZONE = ZoneInfo(os.environ.get("DIGEST_TIMEZONE", "").strip() or "Asia/Seoul")
+
+# --- Claude ----------------------------------------------------------------
+MODEL = os.environ.get("CLAUDE_MODEL", "").strip() or "claude-opus-5-5"
+SELECT_EFFORT = os.environ.get("CLAUDE_SELECT_EFFORT", "").strip() or "low"
+SUMMARY_EFFORT = os.environ.get("CLAUDE_SUMMARY_EFFORT", "").strip() or "medium"
+
+# --- Candidate collection ----------------------------------------------------
+HN_WINDOW_HOURS = 36
+HN_FRONT_PAGE_MIN_POINTS = 40  # popular stories of any topic, before the title filter
+HN_TOPIC_MIN_POINTS = 8  # stories found through HN_QUERIES may be less popular
+HN_MAX_CANDIDATES = 30
+HN_QUERIES = [
+    "LLM",
+    "language model",
+    "VLM",
+    "vision language",
+    "VLA",
+    "robot learning",
+    "inference",
+    "quantization",
+    "distillation",
+    "llama.cpp",
+    "local model",
+    "on-device",
+    "transformer",
+    "GPU",
+]
+# Cheap pre-filter: only stories whose title looks AI-related go to Claude, which does the real
+# filtering. (Algolia matches loosely, so the topic queries return unrelated stories too.)
+HN_TITLE_PATTERN = (
+    r"\b(ai|ml|llms?|vlms?|vla|gpt|claude|gemini|llama|mistral|qwen|deepseek|gemma|phi-\d"
+    r"|transformers?|diffusion|inference|quantiz\w*|distill\w*|prun\w*|fine-?tun\w*|lora|tokens?"
+    r"|tokeniz\w*|embeddings?|neural|gpus?|cuda|mlx|gguf|ollama|vllm|onnx|tensorrt|on-device"
+    r"|language models?|vision[- ]language|multimodal|robots?|robotics|agents?|models?|rag"
+    r"|attention|kv[- ]cache|speculative|sparse|sparsity|1-bit|bitnet|mamba|open[- ]weights?"
+    r"|benchmarks?|latency|throughput)\b"
+)
+
+HF_MAX_AGE_DAYS = 4
+HF_MAX_CANDIDATES = 40
+
+ARXIV_MAX_AGE_DAYS = 4
+ARXIV_MAX_CANDIDATES = 40
+ARXIV_CATEGORIES = ["cs.CL", "cs.CV", "cs.LG", "cs.RO", "cs.AI"]
+# A paper must mention one of these in its abstract ...
+ARXIV_TOPIC_TERMS = [
+    '"language model"',
+    '"language models"',
+    "LLM",
+    "LLMs",
+    '"vision-language"',
+    '"vision-language-action"',
+    "VLM",
+    "VLA",
+]
+# ... and be about efficiency: one of these words in the title, or one of the phrases below in
+# the abstract.
+ARXIV_TITLE_TERMS = [
+    "efficient",
+    "efficiency",
+    "quantization",
+    "quantized",
+    "pruning",
+    "distillation",
+    "compression",
+    "lightweight",
+    "fast",
+    "faster",
+    "acceleration",
+    "accelerating",
+    "sparse",
+    "low-rank",
+    "on-device",
+    "edge",
+    "latency",
+    "real-time",
+]
+ARXIV_ABSTRACT_PHRASES = [
+    '"efficient inference"',
+    '"inference acceleration"',
+    '"inference latency"',
+    '"inference cost"',
+    '"token pruning"',
+    '"token reduction"',
+    '"token compression"',
+    '"KV cache"',
+    '"speculative decoding"',
+    '"model compression"',
+    '"post-training quantization"',
+    '"on-device"',
+    '"memory footprint"',
+]
+
+# How many past digests are checked so an item is never featured twice.
+SEEN_LOOKBACK_DIGESTS = 90
+
+# Text sent to Claude per item.
+SELECT_SNIPPET_CHARS = 420
+ARTICLE_MAX_CHARS = 6000
+
+USER_AGENT = "research-agent-digest/1.0 (GitHub Actions; daily paper digest)"
+
+# --- Site --------------------------------------------------------------------
+SITE_TITLE = os.environ.get("SITE_TITLE", "").strip() or "Efficient AI Daily"
+SITE_TAGLINE = (
+    os.environ.get("SITE_TAGLINE", "").strip()
+    or "LLM · VLM · VLA 효율화 기술을 매일 5개, TL;DR로"
+)
+SITE_URL = os.environ.get("SITE_URL", "").strip().rstrip("/")
