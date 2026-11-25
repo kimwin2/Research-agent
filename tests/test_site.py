@@ -62,6 +62,10 @@ class SiteTests(unittest.TestCase):
         self.assertNotIn("javascript:", home)  # and non-http links are dropped
         self.assertIn("HF Daily Papers ▲12 · Hacker News 80pts", home)
         self.assertIn('href="./2026-11-24/"', home)
+
+        archive = (config.SITE_DIR / "archive/index.html").read_text(encoding="utf-8")
+        self.assertIn('<a href="../2026-11-24/" title="2026년 11월 24일 (화)">24</a>', archive)
+        self.assertIn('<span class="empty">23</span>', archive)
         for path in ("2026-11-24/index.html", "2026-11-25/index.html", "archive/index.html", "feed.xml", "assets/style.css"):
             self.assertTrue((config.SITE_DIR / path).exists(), path)
 

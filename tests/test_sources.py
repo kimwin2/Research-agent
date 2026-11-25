@@ -38,13 +38,14 @@ class ParseTests(unittest.TestCase):
         self.assertEqual(show.url, "https://news.ycombinator.com/item?id=2")
         self.assertEqual(show.summary, "Hi & bye")
 
-    def test_hf_keeps_recent_papers_newest_day_first(self):
+    def test_hf_keeps_recent_papers_most_upvoted_first(self):
         def entry(paper_id, day, upvotes):
             return {"paper": {"id": paper_id, "title": paper_id, "summary": "s", "upvotes": upvotes,
                               "submittedOnDailyAt": f"2026-11-{day}T00:00:00.000Z"}}
 
-        payload = [entry("a", "24", 90), entry("b", "25", 1), entry("c", "25", 7), entry("old", "10", 500)]
-        self.assertEqual([c.id for c in sources.parse_hf(payload, NOW)], ["arxiv:c", "arxiv:b", "arxiv:a"])
+        payload = [entry("b", "25", 1), entry("a", "14", 90), entry("c", "25", 7), entry("c", "25", 7),
+                   entry("old", "02", 500)]
+        self.assertEqual([c.id for c in sources.parse_hf(payload, NOW)], ["arxiv:a", "arxiv:c", "arxiv:b"])
 
     def test_arxiv_strips_version_and_whitespace_and_drops_old(self):
         (paper,) = sources.parse_arxiv(ARXIV_XML, NOW)

@@ -5,6 +5,7 @@
 
 from __future__ import annotations
 
+import calendar
 import os
 import shutil
 from datetime import date, datetime
@@ -47,6 +48,11 @@ def source_line(item: dict) -> str:
         if source == "hf_daily" and signals.get("hf_upvotes"):
             label += f" ▲{signals['hf_upvotes']}"
         parts.append(label)
+    if signals.get("github_stars"):
+        parts.append(f"GitHub ★{signals['github_stars']:,}")
+    if item.get("published"):
+        day = date.fromisoformat(item["published"])
+        parts.append(f"{day.month}월 {day.day}일 공개")
     return " · ".join(parts)
 
 
@@ -140,6 +146,21 @@ def render_day_list(digests: list[dict], root: str) -> str:
     return "".join(rows)
 
 
+def render_calendar(year: int, month: int, digest_dates: set[str], root: str) -> str:
+    """A month grid (Monday first) in which every day that has a digest links to it."""
+    cells = "".join(f'<span class="dow">{name}</span>' for name in WEEKDAYS)
+    for week in calendar.Calendar(firstweekday=0).monthdayscalendar(year, month):
+        for day in week:
+            iso = f"{year:04d}-{month:02d}-{day:02d}"
+            if day == 0:
+                cells += "<span></span>"
+            elif iso in digest_dates:
+                cells += f'<a href="{root}{iso}/" title="{long_date(iso)}">{day}</a>'
+            else:
+                cells += f'<span class="empty">{day}</span>'
+    return f'<div class="calendar">{cells}</div>'
+
+
 def render_feed(digests: list[dict]) -> str:
     entries = []
     for digest in digests[:FEED_DIGESTS]:
@@ -197,10 +218,15 @@ def build() -> int:
         home += f'<h2 class="section">지난 다이제스트</h2>{render_day_list(recent, "./")}'
     write("index.html", page(config.SITE_TITLE, home, root="./"))
 
-    archive = '<div class="day"><h1>아카이브</h1></div>'
+    archive = (
+        '<div class="day"><p class="tagline">날짜를 누르면 그날 정리한 내용을 볼 수 있습니다.</p>'
+        "<h1>아카이브</h1></div>"
+    )
+    digest_dates = {digest["date"] for digest in digests}
     for month, group in groupby(digests, key=lambda digest: digest["date"][:7]):
-        year, month_number = month.split("-")
-        archive += f'<h2 class="section">{year}년 {int(month_number)}월</h2>'
+        year, month_number = (int(part) for part in month.split("-"))
+        archive += f'<h2 class="section">{year}년 {month_number}월</h2>'
+        archive += render_calendar(year, month_number, digest_dates, "../")
         archive += render_day_list(list(group), "../")
     write("archive/index.html", page(f"아카이브 · {config.SITE_TITLE}", archive, root="../"))
 

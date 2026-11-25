@@ -27,9 +27,11 @@ SELECT_EFFORT = os.environ.get("CLAUDE_SELECT_EFFORT", "").strip() or "low"
 SUMMARY_EFFORT = os.environ.get("CLAUDE_SUMMARY_EFFORT", "").strip() or "medium"
 
 # --- Candidate collection ----------------------------------------------------
-HN_WINDOW_HOURS = 36
-HN_FRONT_PAGE_MIN_POINTS = 40  # popular stories of any topic, before the title filter
-HN_TOPIC_MIN_POINTS = 8  # stories found through HN_QUERIES may be less popular
+# The digest is about what has been getting attention lately, not about what appeared today, so
+# every source looks back a couple of weeks and is ranked by popularity.
+HN_WINDOW_DAYS = 10
+HN_FRONT_PAGE_MIN_POINTS = 100  # popular stories of any topic, before the title filter
+HN_TOPIC_MIN_POINTS = 30  # stories found through HN_QUERIES may be less popular
 HN_MAX_CANDIDATES = 30
 HN_QUERIES = [
     "LLM",
@@ -58,11 +60,14 @@ HN_TITLE_PATTERN = (
     r"|benchmarks?|latency|throughput)\b"
 )
 
-HF_MAX_AGE_DAYS = 4
-HF_MAX_CANDIDATES = 40
+HF_MAX_AGE_DAYS = 14
+HF_MAX_PAGES = 10  # 100 papers per page, newest first
+HF_MAX_CANDIDATES = 60  # the most upvoted papers of the window
 
+# arXiv has no popularity signal: these are fresh efficiency papers that only fill a slot when
+# nothing well-known is left.
 ARXIV_MAX_AGE_DAYS = 4
-ARXIV_MAX_CANDIDATES = 40
+ARXIV_MAX_CANDIDATES = 20
 ARXIV_CATEGORIES = ["cs.CL", "cs.CV", "cs.LG", "cs.RO", "cs.AI"]
 # A paper must mention one of these in its abstract ...
 ARXIV_TOPIC_TERMS = [
@@ -126,6 +131,6 @@ USER_AGENT = "research-agent-digest/1.0 (GitHub Actions; daily paper digest)"
 SITE_TITLE = os.environ.get("SITE_TITLE", "").strip() or "Efficient AI Daily"
 SITE_TAGLINE = (
     os.environ.get("SITE_TAGLINE", "").strip()
-    or "LLM · VLM · VLA 효율화 기술을 매일 5개, TL;DR로"
+    or "요즘 가장 주목받는 LLM · VLM · VLA 연구를 매일 5개, TL;DR로"
 )
 SITE_URL = os.environ.get("SITE_URL", "").strip().rstrip("/")

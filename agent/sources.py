@@ -30,7 +30,8 @@ class Candidate:
     summary: str = ""  # abstract, or the text of a Show/Ask HN post
     short: str = ""  # one-sentence summary when the source provides one
     published: str = ""  # ISO timestamp
-    signals: dict[str, int] = field(default_factory=dict)  # hn_points, hn_comments, hf_upvotes
+    signals: dict[str, int] = field(default_factory=dict)  # hn_points, hn_comments, hf_upvotes,
+    # github_stars
     links: dict[str, str] = field(default_factory=dict)  # hn, hf, arxiv, code
 
     def to_dict(self) -> dict:
@@ -97,7 +98,7 @@ def _hn_search(query: str, since: int, min_points: int, per_page: int) -> list[d
 
 
 def fetch_hn(now: datetime) -> list[Candidate]:
-    since = int((now - timedelta(hours=config.HN_WINDOW_HOURS)).timestamp())
+    since = int((now - timedelta(days=config.HN_WINDOW_DAYS)).timestamp())
     title_pattern = re.compile(config.HN_TITLE_PATTERN, re.IGNORECASE)
 
     found = _hn_search("", since, config.HN_FRONT_PAGE_MIN_POINTS, 100)
@@ -115,7 +116,7 @@ def fetch_hn(now: datetime) -> list[Candidate]:
 
 def parse_hf(payload: list[dict], now: datetime) -> list[Candidate]:
     cutoff = (now - timedelta(days=config.HF_MAX_AGE_DAYS)).isoformat()
-    candidates = []
+    candidates: dict[str, Candidate] = {}
     for entry in payload:
         paper = entry.get("paper") or {}
         paper_id = paper.get("id")
@@ -126,26 +127,34 @@ def parse_hf(payload: list[dict], now: datetime) -> list[Candidate]:
         links = {"arxiv": url, "hf": f"https://huggingface.co/papers/{paper_id}"}
         if paper.get("githubRepo"):
             links["code"] = paper["githubRepo"]
-        candidates.append(
-            Candidate(
-                id=f"arxiv:{paper_id}",
-                title=_squash(paper.get("title") or entry.get("title") or ""),
-                url=url,
-                sources=["hf_daily"],
-                summary=_squash(paper.get("summary") or entry.get("summary") or ""),
-                short=_squash(paper.get("ai_summary") or ""),
-                published=submitted,
-                signals={"hf_upvotes": int(paper.get("upvotes") or 0)},
-                links=links,
-            )
+        signals = {"hf_upvotes": int(paper.get("upvotes") or 0)}
+        if paper.get("githubStars"):
+            signals["github_stars"] = int(paper["githubStars"])
+        candidates[f"arxiv:{paper_id}"] = Candidate(
+            id=f"arxiv:{paper_id}",
+            title=_squash(paper.get("title") or entry.get("title") or ""),
+            url=url,
+            sources=["hf_daily"],
+            summary=_squash(paper.get("summary") or entry.get("summary") or ""),
+            short=_squash(paper.get("ai_summary") or ""),
+            published=submitted,
+            signals=signals,
+            links=links,
         )
-    # Newest daily batch first; within a day, most upvoted first.
-    candidates.sort(key=lambda c: (c.published[:10], c.signals["hf_upvotes"]), reverse=True)
-    return candidates[: config.HF_MAX_CANDIDATES]
+    ranked = sorted(candidates.values(), key=lambda c: c.signals["hf_upvotes"], reverse=True)
+    return ranked[: config.HF_MAX_CANDIDATES]
 
 
 def fetch_hf(now: datetime) -> list[Candidate]:
-    payload = json.loads(fetch.get("https://huggingface.co/api/daily_papers?limit=100"))
+    """Page back through the daily papers (newest first) until the window is covered."""
+    cutoff = (now - timedelta(days=config.HF_MAX_AGE_DAYS)).isoformat()
+    payload: list[dict] = []
+    for page in range(config.HF_MAX_PAGES):
+        batch = json.loads(fetch.get(f"https://huggingface.co/api/daily_papers?limit=100&p={page}"))
+        payload += batch
+        oldest = min(((e.get("paper") or {}).get("submittedOnDailyAt") or "" for e in batch), default="")
+        if len(batch) < 100 or oldest < cutoff:
+            break
     return parse_hf(payload, now)
 
 

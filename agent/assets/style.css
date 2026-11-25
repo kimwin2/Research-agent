@@ -90,6 +90,16 @@ h2.section {
   margin: 32px 0 0; padding-bottom: 8px; border-bottom: 1px solid var(--line);
   font-size: 13px; letter-spacing: 0.05em; color: var(--muted);
 }
+.calendar {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px;
+  max-width: 380px; margin: 18px 0 6px; font-size: 14px; text-align: center;
+}
+.calendar > * { padding: 6px 0; border-radius: 8px; font-variant-numeric: tabular-nums; }
+.calendar .dow { font-size: 12px; color: var(--muted); }
+.calendar .empty { color: var(--muted); opacity: 0.45; }
+.calendar a { background: var(--accent); color: var(--bg); font-weight: 700; text-decoration: none; }
+.calendar a:hover { color: var(--bg); opacity: 0.85; }
+
 .past { padding: 18px 0; border-bottom: 1px solid var(--line); }
 .past h3 { margin: 0 0 6px; font-size: 16px; }
 .past h3 a { text-decoration: none; }
