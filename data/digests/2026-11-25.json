@@ -1,50 +1,20 @@
 {
   "date": "2026-11-25",
-  "generated_at": "2026-11-25T13:57:16+00:00",
+  "generated_at": "2026-11-25T14:00:20+00:00",
   "candidates": {
     "hackernews": 30,
     "hf_daily": 60,
     "arxiv": 20
   },
   "usage": {
-    "input_tokens": 23769,
-    "output_tokens": 3109,
+    "input_tokens": 28558,
+    "output_tokens": 3928,
     "calls": 2,
     "models": [
       "claude-opus-5-5"
     ]
   },
   "items": [
-    {
-      "id": "hn:50609685",
-      "title": "GLM-5.4: Toward generalized coding with our first loop transformer",
-      "url": "https://z.ai/blog/glm-5.4",
-      "category": "LLM",
-      "published": "2026-11-23",
-      "sources": [
-        "hackernews"
-      ],
-      "signals": {
-        "hn_points": 1174,
-        "hn_comments": 383
-      },
-      "links": {
-        "hn": "https://news.ycombinator.com/item?id=50609685"
-      },
-      "headline": "Z.ai가 첫 loop transformer 기반 코딩 모델 GLM-5.4를 공개했다(제목 기준).",
-      "tldr": "원문을 가져오지 못해 제목만 보고 쓴 요약이다. Z.ai가 범용 코딩을 목표로 한 GLM-5.4를 발표했고, 이것이 자사 첫 loop transformer 모델이라고 한다.",
-      "key_points": [
-        "핵심 아이디어: 제목상 블록을 반복 적용하는 loop transformer 구조를 GLM 계열에 처음 도입했다.",
-        "주요 결과: 공개된 수치나 benchmark 정보는 없다.",
-        "한계: 제목만 있어 구조, 규모, 성능은 확인할 수 없다."
-      ],
-      "efficiency": "loop 구조는 파라미터를 재사용해 effective depth를 늘리는 방식이지만, 이 모델의 효율 수치는 원문이 없어 알 수 없다.",
-      "tags": [
-        "looped-transformer",
-        "code-llm",
-        "glm"
-      ]
-    },
     {
       "id": "hn:50543989",
       "title": "Energy-Based Reasoners: 385x more efficient inference",
@@ -61,17 +31,17 @@
       "links": {
         "hn": "https://news.ycombinator.com/item?id=50543989"
       },
-      "headline": "Energy-Based Reasoner가 Sudoku-Extreme 99.9%를 달성하면서 inference compute는 345× 줄였다.",
-      "tldr": "looped reasoner에는 언제 멈추고 어떻게 개선할지 알려 주는 명시적 신호가 없다. EBR은 latent reasoning state 위에 energy function을 학습하고, loop 업데이트를 이 energy에 대한 gradient descent로 정의해 refine·stop·select에 모두 쓴다. 1.8M 파라미터로 기존 5–10M 모델들과 같거나 더 나은 성능을 냈다.",
+      "headline": "looped reasoner를 energy 기반 gradient descent로 바꿔 Sudoku-Extreme 99.9%를 345× 적은 inference compute로 달성",
+      "tldr": "기존 looped/recurrent reasoner는 진행 정도를 측정할 명시적 신호가 없어 언제 멈출지 정하기 어렵습니다. EBR은 latent reasoning state에 대한 energy function을 학습하고, loop update를 energy gradient descent로 정의해 refinement, stopping, 후보 selection을 한 번에 해결합니다. 1.8M 파라미터로 Sudoku-Extreme 99.9%를 기록했으며, 차선 모델 대비 inference compute가 345× 적습니다.",
       "key_points": [
-        "energy의 gradient로 state를 refine하고, gradient norm이 threshold 아래로 떨어지면 멈추며, 여러 trajectory 중 energy가 가장 낮은 답을 고른다. 학습에는 exploration-based training을 쓴다.",
-        "Sudoku-Extreme single-sample 99.4%, 5 samples 99.9%로 EqR(128 samples 99.8%)을 넘었고, EqR 대비 FLOPs가 345× 적다. adaptive stopping만으로도 fixed-depth EBR보다 FLOPs가 10.9× 적다.",
-        "Sudoku, Maze, N-Queens, Graph Coloring 같은 algorithmic reasoning benchmark에서만 검증했다. 페이지 제목은 385×인데 본문 수치는 345×다."
+        "energy E(z;x)로 상태를 평가하고, gradient로 상태를 refine하며, gradient norm이 threshold 아래로 떨어지면 멈추고, 여러 후보 중 energy가 가장 낮은 것을 고르며, 학습 시 exploration-based training으로 energy landscape를 다듬습니다.",
+        "1.8M 파라미터로 single sample 기준 Sudoku-Extreme 99.4%, Maze-Hard 87.4%를 기록했고, 5 samples로는 각각 99.9%와 88.3%에 도달해 최대 128 samples를 쓰는 5–7M급 baseline보다 앞섭니다.",
+        "검증은 Sudoku, Maze, N-Queens, Graph Coloring 같은 algorithmic reasoning benchmark 4종에서만 이뤄졌고, HN 제목의 '385x'와 달리 본문 수치는 345×입니다."
       ],
-      "efficiency": "EqR 최고 정확도에 iteration은 7×, sample은 43× 적게 써서 도달하고, 전체 inference FLOPs는 345× 줄였다. training compute는 비슷하다.",
+      "efficiency": "adaptive stopping으로 fixed-depth EBR보다 FLOPs가 10.9× 줄고, EqR와 비교하면 345× 적은 FLOPs로 더 높은 정확도를 내며, EqR 최고 정확도에 도달하는 데 iteration은 7×, sample은 43× 적게 듭니다. training compute는 기존 모델과 비슷합니다.",
       "tags": [
-        "looped-models",
-        "energy-based-models",
+        "energy-based-model",
+        "looped-reasoning",
         "adaptive-compute",
         "test-time-scaling"
       ]
@@ -94,19 +64,19 @@
         "hf": "https://huggingface.co/papers/2611.29897",
         "code": "https://github.com/AIGeeksGroup/MotionMamba2.0"
       },
-      "headline": "Motion Mamba 2.0이 휴머노이드 장기 모션 생성 latency를 RTX 4090에서 6.1× 줄였다.",
-      "tldr": "autoregressive diffusion 모션 생성은 attention cache가 제한돼 먼 과거를 보기 어렵고, 반복 denoising 때문에 추론 비용이 크다. 이 논문은 Mamba recurrent state, local attention, persistent content memory(PCM)를 결합하고, CUDA Graph와 fused kernel로 실행 경로를 최적화했다. Unitree G1 실機에서도 검증했다.",
+      "headline": "Mamba 기반 autoregressive diffusion으로 39.52초 long-horizon 모션을 생성하고 latency를 6.1× 단축",
+      "tldr": "autoregressive diffusion 모션 생성은 attention cache 크기가 제한돼 먼 과거를 참조하기 어렵고, 반복 denoising 때문에 inference 비용도 큽니다. Motion Mamba 2.0은 local attention, resumable recurrent state, persistent content memory(PCM)를 결합하고, CUDA Graph와 fused kernel로 실행 경로를 최적화했습니다. 39.52초 rollout에서 정확한 terminal control을 보였고, Unitree G1 실기에서도 동작을 시연했습니다.",
       "key_points": [
-        "PCM은 Mamba state에 압축된 모션 history, state 변화, text feature를 content slot으로 바꾼 뒤 local attention이 접근할 수 있게 한다.",
-        "median complete-window latency가 1685.35ms에서 276.14ms로 줄어 6.138× 빨라졌고, 출력은 동일하게 유지됐다. 최대 39.52s rollout에서 terminal control이 정확했다.",
-        "speedup은 RTX 4090과 테스트한 rollout 기준이며, 장기 평가는 retargeted HiPHI 데이터에서 했다."
+        "PCM은 Mamba recurrent state에 압축된 모션 history, state 변화, text feature를 local attention이 접근할 수 있는 content slot으로 동적으로 변환합니다.",
+        "RTX 4090에서 median complete-window latency가 1685.35 ms에서 276.14 ms로 줄어 median paired speedup 6.138×를 기록했으며, 테스트한 rollout에서는 출력이 동일하게 유지됐습니다.",
+        "short-horizon 성능(BONES Seed, HumanML3D)은 '강함'이라고만 서술돼 있고 abstract에 구체적인 수치는 없습니다."
       ],
-      "efficiency": "CUDA Graph replay, fused kernel, 실행 흐름 단순화로 출력을 바꾸지 않고 추론 latency를 약 6.1× 줄였다.",
+      "efficiency": "출력을 바꾸지 않고 CUDA Graph replay, fused kernel, 실행 흐름 단순화만으로 latency를 약 6.1× 줄였으므로, diffusion 기반 실시간 제어에서 시스템 수준 최적화가 갖는 효과를 보여 줍니다.",
       "tags": [
         "mamba",
-        "motion-generation",
-        "humanoid",
-        "kernel-optimization"
+        "motion-diffusion",
+        "humanoid-control",
+        "inference-optimization"
       ]
     },
     {
@@ -127,19 +97,19 @@
         "hf": "https://huggingface.co/papers/2611.18397",
         "code": "https://github.com/RainBowLuoCS/Gamer"
       },
-      "headline": "Gamer는 키보드·마우스 trajectory 수만 시간으로 학습한 실시간 게임용 generalist VLA다.",
-      "tldr": "복잡한 2D·3D 환경에서 장기 과제를 수행하는 generalist agent를 목표로 한다. 수만 시간 분량의 device-level 입력 데이터로 continued pre-training을 하고, sparse-thinking instruction tuning과 multi-turn RL을 거친 뒤, cloud-edge 추론 엔진으로 서빙한다. 여러 3D open-world 게임에서 숙련 플레이어에 견줄 만한 성능을 보였다고 한다.",
+      "headline": "수만 시간 분량의 키보드·마우스 데이터로 학습한 VLA 게임 에이전트 Gamer가 3D 오픈월드에서 숙련자 수준 효율을 보임",
+      "tldr": "Gamer는 2D GUI와 3D 시뮬레이션 세계를 모두 다루는 long-horizon generalist VLA agent입니다. 수만 시간의 device-level 키보드·마우스 trajectory로 continued pre-training을 한 뒤, sparse-thinking instruction tuning과 안정적인 multi-turn RL을 적용했습니다. 여러 3D open-world 게임에서 숙련 플레이어에 견줄 만한 일반화 성능과 조작 효율을 보였다고 주장합니다.",
       "key_points": [
-        "sparse-thinking instruction tuning으로 불필요한 reasoning 연산을 줄이면서 복잡한 결정에 필요한 추론은 유지한다.",
-        "주요 결과는 3D 게임에서의 일반화와 2D benchmark에서의 경쟁력 있는 성능이지만, 초록에 구체적 수치는 없다.",
-        "multi-turn RL은 유한한 context, rollout 오류 누적, sparse reward 문제를 다루도록 설계됐다. 평가는 게임 환경 중심이다."
+        "sparse-thinking instruction tuning으로 꼭 필요한 reasoning만 남기고 중복 연산을 줄였으며, multi-turn RL로 유한한 context, 누적되는 rollout 오류, sparse reward 문제를 다룹니다.",
+        "3D 게임에서는 숙련자 수준의 효율을, 2D 게임 benchmark에서는 competitive한 결과를 보였다고 하지만 abstract에 구체적인 수치는 없습니다.",
+        "단순 반복적인 키보드·마우스 trajectory도 데이터와 학습 알고리즘을 확장하면 큰 이득을 낼 수 있다는 것이 핵심 주장입니다."
       ],
-      "efficiency": "sparse thinking으로 reasoning 연산을 줄이고, cloud-edge 엔진으로 동시 서빙, unbounded context, 낮은 latency를 지원한다고 하지만 정량 수치는 제시되지 않았다.",
+      "efficiency": "sparse thinking으로 reasoning 연산을 줄이고, cloud-edge inference engine으로 여러 환경을 동시에 서빙하며 unbounded context와 낮은 latency를 지원한다고 하지만 감소 폭은 수치로 제시되지 않았습니다.",
       "tags": [
         "vla",
         "game-agent",
         "sparse-reasoning",
-        "serving"
+        "multi-turn-rl"
       ]
     },
     {
@@ -160,19 +130,49 @@
         "hf": "https://huggingface.co/papers/2611.24738",
         "code": "https://github.com/Carol-lyh/Jeveration"
       },
-      "headline": "Jeveration은 frozen VLM으로 512x512 이미지를 한 번의 forward pass, 78ms 만에 생성한다.",
-      "tldr": "System One 방식의 병렬 예측을 이미지 생성으로 확장한 연구다. 모든 위치를 공유 random state에 condition해 병렬 예측이 하나의 일관된 이미지로 모이게 하고, 먼저 discrete image code 분포를 학습해 single-pass 생성을 유도한다. 하나의 checkpoint로 text-to-image, image-to-image, dense prediction을 모두 처리한다.",
+      "headline": "frozen VLM을 활용한 single forward pass 이미지 생성으로 512×512 이미지를 78 ms에 생성하며 최대 122× 빠름",
+      "tldr": "Jev 같은 System One 모델의 병렬 예측 방식을 이미지 생성으로 확장했으며, 핵심 과제는 병렬 예측 결과가 전체적으로 일관된 이미지로 수렴하게 만드는 것입니다. 모든 위치에 공유 random state를 조건으로 주고, 모델이 이 state를 무시하지 않도록 discrete image code 분포를 먼저 학습해 생성을 유도합니다. 하나의 checkpoint로 T2I, I2I, dense prediction을 모두 1-pass로 처리합니다.",
       "key_points": [
-        "frozen VLM의 visual-semantic 지식을 재활용하고, shared random state로 매번 다르지만 coherent한 이미지를 생성한다.",
-        "512x512 생성에 78ms가 걸려 기존 unified model보다 최대 122× 빠르며, 화질은 경쟁력 있는 수준이다.",
-        "직접 이미지 supervision만 주면 모델이 random state를 무시하기 때문에 discrete code 분포를 먼저 학습하는 단계가 필요하다."
+        "frozen VLM의 visual-semantic 지식을 재활용하고, 공유 random state로 병렬 예측을 조율해 샘플마다 서로 다르면서도 일관된 이미지를 얻습니다.",
+        "512×512 이미지를 78 ms에 생성해 기존 unified model보다 최대 122× 빠르며, 이미지 품질과 dense prediction 성능은 competitive하다고 보고합니다.",
+        "품질은 'competitive'라고만 서술돼 있고 abstract에 FID 같은 구체적인 품질 수치는 없습니다."
       ],
-      "efficiency": "iterative diffusion이나 AR decoding 없이 single forward pass로 생성해 기존 unified model 대비 최대 122× 빠르다.",
+      "efficiency": "iterative decoding이나 denoising 없이 single forward pass로 생성해 unified model 대비 최대 122× 빠르게 이미지를 만듭니다.",
       "tags": [
-        "single-step-generation",
+        "single-pass-generation",
         "unified-model",
-        "vlm",
-        "image-generation"
+        "image-generation",
+        "frozen-vlm"
+      ]
+    },
+    {
+      "id": "hn:50548021",
+      "title": "Seven new models at scalable price-performance",
+      "url": "https://microsoft.ai/news/microsoft-ignite-2026/",
+      "category": "LLM",
+      "published": "2026-11-18",
+      "sources": [
+        "hackernews"
+      ],
+      "signals": {
+        "hn_points": 607,
+        "hn_comments": 377
+      },
+      "links": {
+        "hn": "https://news.ycombinator.com/item?id=50548021"
+      },
+      "headline": "Microsoft MAI가 경쟁 모델 대비 가격을 크게 낮췄다고 주장하는 신규 모델 7종을 공개",
+      "tldr": "상시 구동하는 agent 비용을 겨냥해 MAI가 cyber, code, image, realtime, transcription, decision 영역의 모델 7종을 공개했습니다. MAI Code 2는 GPT-6.1 Sol 코딩 품질의 98%를 약 40% 가격에, Opus 5.5 성능의 96%를 5% 가격에 제공한다고 주장합니다. 2세대 accelerator Maia 200은 와트당 토큰 처리량이 1.7× 높다고 밝혔습니다.",
+      "key_points": [
+        "MAI Cyber 2 Flash는 CyberGym-E2E에서 GPT-6 Astra보다 높은 품질을 task당 비용 2% 미만으로 내고, Decision 1.1은 GPT-6.1 Sol보다 50× 빠르고 79× 저렴하다고 주장합니다.",
+        "MAI Image 2.7은 Artificial Analysis 이미지 편집 부문 1위이며 GPT Image 2.6 Sunburst보다 1/5 가격이라고 하고, MAI Realtime 1은 오디오 1분당 $0.01부터 시작합니다.",
+        "모두 벤더 발표 자료의 주장이며 독립 검증이나 구체적인 평가 조건은 제시되지 않았습니다."
+      ],
+      "efficiency": "주장대로라면 frontier 모델 대비 비용이 2–60% 수준으로 내려가고(모델별로 상이), Maia 200은 와트당 토큰 처리량이 1.7× 높습니다.",
+      "tags": [
+        "model-release",
+        "price-performance",
+        "ai-accelerator"
       ]
     }
   ]
