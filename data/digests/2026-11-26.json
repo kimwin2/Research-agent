@@ -1,0 +1,190 @@
+{
+  "date": "2026-11-26",
+  "generated_at": "2026-11-26T00:39:10+00:00",
+  "candidates": {
+    "hackernews": 30,
+    "hf_daily": 60,
+    "arxiv": 20
+  },
+  "usage": {
+    "input_tokens": 28410,
+    "output_tokens": 3644,
+    "calls": 2,
+    "models": [
+      "claude-opus-5-5"
+    ]
+  },
+  "items": [
+    {
+      "id": "hn:50548021",
+      "title": "Seven new models at scalable price-performance",
+      "url": "https://microsoft.ai/news/microsoft-ignite-2026/",
+      "category": "LLM",
+      "published": "2026-11-18",
+      "sources": [
+        "hackernews"
+      ],
+      "signals": {
+        "hn_points": 607,
+        "hn_comments": 377
+      },
+      "links": {
+        "hn": "https://news.ycombinator.com/item?id=50548021"
+      },
+      "media": {
+        "type": "image",
+        "url": "https://microsoft.ai/wp-content/uploads/2026/11/All-Up-Blog.jpg"
+      },
+      "headline": "Microsoft MAI가 모델 7종을 공개하며, 경쟁 frontier 모델 대비 일부 가격으로 비슷하거나 더 높은 품질을 낸다고 주장했다.",
+      "tldr": "agent를 24시간 돌리면 token 비용이 급증하기 때문에, Microsoft MAI는 가격 대비 성능을 앞세운 모델 7종을 Ignite에서 발표했다. 핵심 주장은 MAI Code 2가 GPT-6.1 Sol 코딩 품질의 98%를 약 40% 가격에 낸다는 것이다. 발표 내용은 모두 회사 측 수치이며 세부 평가 방법은 공개되지 않았다.",
+      "key_points": [
+        "라인업은 MAI Cyber 2 Flash, Code 2, Code 2 Flash, Image 2.7, Realtime 1, Transcribe 2 기반 Dragon Copilot Transcribe, Decision 1.1이며, 2세대 가속기 Maia 200도 함께 언급됐다.",
+        "MAI Code 2는 Opus 5.5 성능의 96%를 5% 가격에 내고, MAI Cyber 2 Flash는 CyberGym-E2E에서 GPT-6 Astra보다 품질이 높으면서 task당 비용은 2% 미만이라고 한다.",
+        "모두 벤더 블로그의 자체 주장이며 benchmark 설정, 모델 크기, 추론 방식은 공개되지 않았다."
+      ],
+      "efficiency": "발표 기준으로 Decision 1.1은 GPT-6.1 Sol보다 50배 빠르고 79배 저렴하며, Maia 200은 watt당 token을 1.7배 더 처리하고, MAI Realtime 1은 오디오 분당 $0.01부터 시작한다.",
+      "tags": [
+        "model-release",
+        "price-performance",
+        "inference-cost",
+        "ai-accelerator"
+      ]
+    },
+    {
+      "id": "arxiv:2611.24738",
+      "title": "Jeveration: System One Models Now Generate",
+      "url": "https://arxiv.org/abs/2611.24738",
+      "category": "VLM",
+      "published": "2026-11-19",
+      "sources": [
+        "hf_daily"
+      ],
+      "signals": {
+        "hf_upvotes": 156,
+        "github_stars": 169
+      },
+      "links": {
+        "arxiv": "https://arxiv.org/abs/2611.24738",
+        "hf": "https://huggingface.co/papers/2611.24738",
+        "code": "https://github.com/Carol-lyh/Jeveration"
+      },
+      "media": null,
+      "headline": "Jeveration은 frozen VLM으로 512x512 이미지를 single forward pass, 78 ms에 생성한다.",
+      "tldr": "Jev 같은 System One 모델의 병렬 예측 방식으로 이미지를 한 번에 생성하려면, 병렬로 예측한 위치들이 하나의 일관된 이미지로 수렴해야 한다는 문제가 있다. 저자들은 모든 위치를 공유 random state에 conditioning하고, discrete image code 분포를 먼저 학습해 single-pass 생성을 유도했다. 그 결과 기존 unified model보다 최대 122배 빠르면서도 품질은 경쟁력 있는 수준이라고 보고한다.",
+      "key_points": [
+        "frozen VLM의 visual-semantic 지식을 재활용하고 공유 random state로 병렬 예측을 조율해, 샘플마다 서로 다르지만 일관된 이미지를 얻는다.",
+        "512x512 이미지를 78 ms에 생성해 기존 unified model 대비 최대 122배 빠르며, text-to-image, image-to-image, dense prediction을 checkpoint 하나에서 처리한다.",
+        "이미지를 직접 supervision하면 모델이 random state를 무시하는 경향이 있어 discrete code 분포를 먼저 학습하는 단계가 필요하고, 품질은 'competitive'라고만 되어 있어 구체적 수치는 abstract에 없다."
+      ],
+      "efficiency": "반복 sampling 없이 single forward pass로 생성해 기존 unified model 대비 최대 122배 빠른 latency(512x512 기준 78 ms)를 달성한다.",
+      "tags": [
+        "single-pass-generation",
+        "image-generation",
+        "unified-model",
+        "vlm"
+      ]
+    },
+    {
+      "id": "arxiv:2611.21885",
+      "title": "Language Models Can Rewrite Their Own Weights",
+      "url": "https://arxiv.org/abs/2611.21885",
+      "category": "LLM",
+      "published": "2026-11-20",
+      "sources": [
+        "hackernews"
+      ],
+      "signals": {
+        "hn_points": 494,
+        "hn_comments": 146
+      },
+      "links": {
+        "hn": "https://news.ycombinator.com/item?id=50577265",
+        "arxiv": "https://arxiv.org/abs/2611.21885"
+      },
+      "media": null,
+      "headline": "오픈 27B 모델이 gradient 없이 스스로 추론해 자기 weight를 고쳐, 처음 보는 문제에서 정확도를 6.6pt 올렸다.",
+      "tldr": "학습이 끝난 LLM을 개선하려면 재학습을 하거나, 끝나면 사라지는 prompt·harness·추론 compute에 기대야 한다. 이 논문은 27B 모델에게 자기 weight, 채점된 답, 자기 자신을 실행하는 능력을 주어 실패 원인을 진단하고 해당 weight를 직접 수정하게 하는 'self-rewriting'을 제안한다. 이렇게 한 edit만으로 처음 보는 문제의 정확도가 6.6pt 올랐고, 8번 연속 session 동안 정확도가 계속 상승했다.",
+      "key_points": [
+        "forward pass만으로 모델이 자기 optimizer 역할을 하며, practice 문제로 edit를 검증한 뒤 효과가 있는 것만 제출한다.",
+        "정확도가 unseen 문제에서 +6.6pt 올랐고, 손상된 사본을 원본 weight를 보지 않은 채 복구해 처음 보는 이미지 task에서 원래 정확도의 80% 이상을 되찾았다.",
+        "이 능력은 scale에 따라 나타나서, 같은 family의 작은 모델은 edit를 하지 못하거나 오히려 자신을 망가뜨렸고 가장 큰 모델만 성공했다."
+      ],
+      "efficiency": "test-time scaling과 달리 개선 효과가 weight에 기록되므로 답변당 추가 비용이 없고, 학습 대신 serving과 같은 forward pass만 쓴다.",
+      "tags": [
+        "self-improvement",
+        "weight-editing",
+        "gradient-free",
+        "test-time-compute"
+      ]
+    },
+    {
+      "id": "hn:50629231",
+      "title": "A training engine for your local model, using your idle compute",
+      "url": "https://github.com/sous-labs/songe",
+      "category": "Systems",
+      "published": "2026-11-24",
+      "sources": [
+        "hackernews"
+      ],
+      "signals": {
+        "hn_points": 231,
+        "hn_comments": 72
+      },
+      "links": {
+        "hn": "https://news.ycombinator.com/item?id=50629231"
+      },
+      "media": null,
+      "headline": "Songe는 로컬 agent의 사용 기록으로 유휴 시간에 LoRA를 fine-tuning하는 오픈소스 엔진이다.",
+      "tldr": "로컬 모델은 사용자의 작업 방식에서 배우지 못한다. Songe는 에이전트와 모델 서버 사이에 OpenAI-compatible proxy로 들어가 사용자 교정, 선호, tool error를 lesson으로 기록하고, 유휴 시간에 LoRA adapter를 학습한다. 새 버전은 사용자 대화 기준으로 확실히 더 나을 때만 배포한다.",
+      "key_points": [
+        "Quick Dream은 몇 분 안에 선호를 instruction에 추가하고, Deep Dream은 1시간 이상 걸려 lesson에서 practice 장면을 만든 뒤 self-distillation 방식으로 LoRA를 학습한다(lesson을 본 원본 모델이 teacher).",
+        "성능 향상에 대한 정량 수치는 공개되지 않았다.",
+        "학습에는 Apple Silicon(MLX)이나 NVIDIA·AMD GPU가 필요하고, end-to-end 테스트는 LM Studio(macOS)와 vLLM(Linux)에서만 이루어졌다."
+      ],
+      "efficiency": "별도 학습 인프라 없이 로컬 머신의 유휴 compute와 LoRA만으로 개인화 학습을 하며, 비용·속도 절감 수치는 제시되지 않았다.",
+      "tags": [
+        "lora",
+        "on-device-training",
+        "personalization",
+        "local-llm"
+      ]
+    },
+    {
+      "id": "arxiv:2611.31201",
+      "title": "Embo-Harness: Towards Understanding Frontier-Model-as-Policy Harness",
+      "url": "https://arxiv.org/abs/2611.31201",
+      "category": "VLA",
+      "published": "2026-11-24",
+      "sources": [
+        "hf_daily"
+      ],
+      "signals": {
+        "hf_upvotes": 103,
+        "github_stars": 68
+      },
+      "links": {
+        "arxiv": "https://arxiv.org/abs/2611.31201",
+        "hf": "https://huggingface.co/papers/2611.31201",
+        "code": "https://github.com/DravenALG/Embo-Harness"
+      },
+      "media": {
+        "type": "video",
+        "url": "https://cdn-uploads.huggingface.co/production/uploads/69eb5cff11b847ca607c41ae/nvIkhjjirCamLCj15FABR.mp4"
+      },
+      "headline": "Embo-Harness는 frontier 모델을 robot policy로 쓰는 harness 설계 recipe로 RoboLab-120에서 83.3%를 달성했다.",
+      "tldr": "frontier multimodal 모델을 closed-loop robot policy로 직접 쓰는 방식이 떠오르고 있지만, 어떤 harness 설계가 효과적인지는 불분명했다. 저자들은 prompting, planning, action execution, tool use를 체계적으로 분석해 6가지 발견을 정리했다. 이 recipe로 RoboLab-120에서 최강 baseline보다 26.2pt 높은 83.3% 성공률을 냈다.",
+      "key_points": [
+        "handcrafted plan, skill, action prior보다 모델 고유의 visual reasoning과 tool-use를 활용하는 interface를 우선하고, action representation, chunking, reasoning effort 등의 설정도 정리했다.",
+        "RoboLab-120에서 83.3%(+26.2pt)를 기록했고, 실제 조작 task 4개의 zero-shot 시행 20회 중 15회 성공했다.",
+        "통제 실험에 따르면 성능은 저수준 joint·trajectory 생성보다 정확한 spatial target 추정에 더 크게 좌우되며, 분석은 연구에 사용한 한 모델 기준이다."
+      ],
+      "efficiency": "효율 자체를 다룬 연구는 아니지만, 효율적인 VLA를 설계할 때 저수준 action 생성보다 spatial target 추정과 짧은 multi-action chunk에 투자해야 함을 시사한다.",
+      "tags": [
+        "vla",
+        "robot-policy",
+        "agent-harness",
+        "frontier-models"
+      ]
+    }
+  ]
+}
