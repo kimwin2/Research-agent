@@ -1,8 +1,12 @@
 name: Daily digest
 
 on:
+  # GitHub may start a scheduled run late or drop it altogether, so the same day is scheduled three
+  # times. A run that finds today's digest already written skips Claude and just redeploys.
   schedule:
-    - cron: "17 22 * * *" # every day 07:17 KST (22:17 UTC)
+    - cron: "17 22 * * *" # 07:17 KST (22:17 UTC the day before)
+    - cron: "47 23 * * *" # 08:47 KST
+    - cron: "17 2 * * *" # 11:17 KST
   workflow_dispatch:
     inputs:
       force:
