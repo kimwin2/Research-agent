@@ -1,0 +1,197 @@
+{
+  "date": "2026-11-27",
+  "generated_at": "2026-11-27T04:05:12+00:00",
+  "candidates": {
+    "hackernews": 30,
+    "hf_daily": 60,
+    "arxiv": 20
+  },
+  "usage": {
+    "input_tokens": 25391,
+    "output_tokens": 3633,
+    "calls": 2,
+    "models": [
+      "claude-opus-5-5"
+    ]
+  },
+  "items": [
+    {
+      "id": "hn:50535230",
+      "title": "GPT‑6.2 Astra and Sol",
+      "url": "https://openai.com/index/introducing-gpt-6-2-astra-sol/",
+      "category": "LLM",
+      "published": "2026-11-17",
+      "sources": [
+        "hackernews"
+      ],
+      "signals": {
+        "hn_points": 1347,
+        "hn_comments": 867
+      },
+      "links": {
+        "hn": "https://news.ycombinator.com/item?id=50535230"
+      },
+      "media": {
+        "type": "image",
+        "url": "https://cdn.openai.com/mdx-assets/e193aefe-5e58-431c-8cd2-adadac0c1496/44573edd-9653-49b3-ba07-7b3643545ef9.d3072be3.png"
+      },
+      "headline": "OpenAI가 GPT-6.2 Astra·Sol을 공개했고, 더 적은 output token과 더 낮은 비용으로 이전 모델보다 높은 성능을 낸다고 밝혔다.",
+      "tldr": "OpenAI가 frontier 모델 GPT-6.2 Astra와 일상 업무용 효율 모델 GPT-6.2 Sol을 내놓았다. 두 모델 모두 더 적은 output token으로 어려운 작업을 처리한다는 점을 내세우며, Agents' Last Exam에서 Astra는 GPT-6 Astra보다 5.2점 높은 점수를 1/3 미만의 비용으로 기록했다.",
+      "key_points": [
+        "Astra는 slides·spreadsheet·문서가 템플릿과 각 분야의 관행을 더 잘 따르도록 학습됐고, Sol은 multistep agentic workflow에 최적화된 기본 모델로 소개됐다.",
+        "GDPval v2에서 Astra는 GPT-6 Astra 대비 +6.2%p를 기록하면서 output token은 22% 적게 썼고, FrontierCode 2.0에서 Sol은 Astra와 0.5점 이내 차이를 약 1/5 비용으로 냈다.",
+        "대부분 OpenAI 자체 발표이며, 일부 벤치마크(GDPval v2)는 내부 평가이고 Fable 5.2 비교에서는 fallback 모델을 쓴 9개 task가 빠져 있다."
+      ],
+      "efficiency": "Astra의 API 가격은 GPT-6 Astra보다 20% 낮고(input $8, cached input $0.40, output $40 / 1M tokens) cached input은 60% 할인되며, task당 output token도 줄었다.",
+      "tags": [
+        "frontier-llm",
+        "token-efficiency",
+        "agents",
+        "pricing"
+      ]
+    },
+    {
+      "id": "hn:50552424",
+      "title": "Gemini 4 Neon",
+      "url": "https://blog.google/innovation-and-ai/models-and-research/gemini-models/introducing-gemini-4-neon/",
+      "category": "VLM",
+      "published": "2026-11-18",
+      "sources": [
+        "hackernews"
+      ],
+      "signals": {
+        "hn_points": 1071,
+        "hn_comments": 778
+      },
+      "links": {
+        "hn": "https://news.ycombinator.com/item?id=50552424"
+      },
+      "media": {
+        "type": "image",
+        "url": "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/gemini-4-neon__blog-header__sm.width-1300.png"
+      },
+      "headline": "Gemini 4 Neon은 AA Intelligence Index 61점으로 전체 3위를 차지했고, 더 큰 모델보다 빠르고 저렴한 Pareto frontier 위에 있다.",
+      "tldr": "Google DeepMind가 software engineering·knowledge work·과학 workflow를 빠르게 끝까지 처리하는 데 초점을 둔 Gemini 4 Neon을 공개했다. 1M context에 가격은 $3/$15(1M tokens 기준)이며, AA Coding Agent Index 58.6으로 1위, Terminal-Bench Science 70.5%를 기록했다.",
+      "key_points": [
+        "4단계 thinking level로 성능과 token 사용량을 조절할 수 있고, Antigravity에서 병렬 Hydrogen subagent를 지휘하는 Orchestrator로도 쓸 수 있다.",
+        "기본 high 설정에서 Carbon보다 task당 비용이 32% 낮고, SWE-sweep에서는 mini-SWE harness의 12.8%가 Antigravity harness에서 39.0%로 올라갔다.",
+        "Google 자체 발표이며, 일부 결과(fabrication rate 등)는 내부 Antigravity 테스트에서 나왔고 harness에 따라 성능 차이가 크다."
+      ],
+      "efficiency": "cached input이 95% 할인($0.15/1M)되고, task당 비용이 Carbon보다 32% 낮으며, 중복 file read를 줄이고 context compaction을 안정적으로 처리해 긴 agent 세션의 비용을 낮춘다.",
+      "tags": [
+        "frontier-llm",
+        "agents",
+        "pricing",
+        "coding"
+      ]
+    },
+    {
+      "id": "arxiv:2611.34923",
+      "title": "Mixture-of-Loops Transformer",
+      "url": "https://arxiv.org/abs/2611.34923",
+      "category": "LLM",
+      "published": "2026-11-26",
+      "sources": [
+        "hf_daily"
+      ],
+      "signals": {
+        "hf_upvotes": 66,
+        "github_stars": 69
+      },
+      "links": {
+        "arxiv": "https://arxiv.org/abs/2611.34923",
+        "hf": "https://huggingface.co/papers/2611.34923",
+        "code": "https://github.com/hustvl/MoLT"
+      },
+      "media": null,
+      "headline": "Looped Transformer의 loop 사이에 KV를 memory로 넘기는 MoLT로, OLMo3 대비 1.7x token efficiency를 얻었다.",
+      "tldr": "Looped Transformer는 expressivity가 높은 대신 효율이 떨어지는데, MoLT는 Mixture-of-Loops Attention으로 KV를 depth와 loop를 가로질러 선택적으로 재사용한다. U-MoLT는 400B token pretraining에서 700M/1.5B dense와 3B MoE 모두 OLMo3를 앞섰고, 추론 latency는 non-looped 모델과 비슷하다.",
+      "key_points": [
+        "MoLT-KV는 같은 위치의 cross-loop 의존성을 없애고 loop forcing으로 병렬 학습을 가능하게 하며, U-MoLT는 memory 구성과 readout을 분리해 쓰이지 않는 decoder traversal을 건너뛴다.",
+        "700M에서 validation CE token efficiency가 1.7x이고, 3B MoE에서는 perplexity가 0.75 개선되고 10-task 정확도가 2.1%p 올랐으며, Qwen3.5-0.8B continued pretraining에서는 평균 1.4x를 기록했다.",
+        "latency 동등성(996.6 vs 1,000.6 ms)은 약 113M S-size 모델과 MoL-Hybrid-2 설정에서만 보고됐다."
+      ],
+      "efficiency": "같은 CE에 도달하는 데 필요한 학습 token이 1.4–1.7x 줄고, 추론 latency는 non-looped OLMo3 수준으로 유지된다.",
+      "tags": [
+        "looped-transformer",
+        "architecture",
+        "kv-cache",
+        "pretraining-efficiency"
+      ]
+    },
+    {
+      "id": "arxiv:2611.28947",
+      "title": "Don't Sleep, Keep Watch: Proactive Perception for Computer-Use Agents",
+      "url": "https://arxiv.org/abs/2611.28947",
+      "category": "VLM",
+      "published": "2026-11-25",
+      "sources": [
+        "hf_daily"
+      ],
+      "signals": {
+        "hf_upvotes": 103,
+        "github_stars": 4
+      },
+      "links": {
+        "arxiv": "https://arxiv.org/abs/2611.28947",
+        "hf": "https://huggingface.co/papers/2611.28947",
+        "code": "https://github.com/SuJQ0722/NightWatch"
+      },
+      "media": {
+        "type": "video",
+        "url": "https://cdn-uploads.huggingface.co/production/uploads/668b71a9aafa84bf3c986a22/ipvmBq2nQaH81MAMYf7_W.mp4"
+      },
+      "headline": "0.8B watcher 모델로 computer-use agent에 연속 인지를 붙여, OSWorld에서 낭비 시간을 53% 줄였다.",
+      "tldr": "VLM 기반 CUA는 snapshot 방식으로 화면을 인지하고 추론 latency가 커서, 행동을 실행할 때쯤에는 본 상태가 이미 낡아 있는 perception-action gap이 생긴다. NightWatch는 경량 System-1 모델 NightWatch-0.8B로 화면을 streaming 모니터링해, agent의 모델·prompt·action space를 바꾸지 않고 현재 상태에 맞춰 결정하도록 한다.",
+      "key_points": [
+        "plug-and-play 방식으로, 작은 watcher가 interface 변화를 계속 추적해 낡은 상태에 기반한 행동과 불필요한 대기를 줄인다.",
+        "OSWorld에서 non-reasoning wall-clock time을 33%, 낭비 시간을 53% 줄이면서 성공률은 유지했고, DynaCU-Bench 성공률은 39.5%에서 44.2%로 올랐다.",
+        "평가는 screenshot-only 입력 기준이며, 성공률 향상은 large VLM agent와 함께 쓴 경우에 보고됐다."
+      ],
+      "efficiency": "0.8B watcher만 추가해 agent의 대기·낭비 시간을 크게 줄였고, 30배 이상 큰 System-1 decision model이나 AOI·PUSV 같은 passive-watching baseline보다 효율적이다.",
+      "tags": [
+        "computer-use-agent",
+        "vlm",
+        "latency",
+        "streaming-perception"
+      ]
+    },
+    {
+      "id": "arxiv:2611.30634",
+      "title": "Rewirable Circuits in Transformers with Loom Attention",
+      "url": "https://arxiv.org/abs/2611.30634",
+      "category": "LLM",
+      "published": "2026-11-25",
+      "sources": [
+        "hf_daily"
+      ],
+      "signals": {
+        "hf_upvotes": 95,
+        "github_stars": 18
+      },
+      "links": {
+        "arxiv": "https://arxiv.org/abs/2611.30634",
+        "hf": "https://huggingface.co/papers/2611.30634",
+        "code": "https://github.com/Caiyun-AI/LoomFormer"
+      },
+      "media": {
+        "type": "video",
+        "url": "https://cdn-uploads.huggingface.co/production/uploads/62d77440bad37ef354028365/glzrrRnQ6Mj_agzyR1PEA.mp4"
+      },
+      "headline": "head가 이전 head의 출력에 attention하는 loom attention으로, 3x compute를 쓴 Transformer와 같은 성능을 냈다.",
+      "tldr": "loom attention은 token 방향(horizontal) attention에 이전 head 출력에 대한 vertical attention을 엮어, token마다 circuit을 동적으로 다시 연결한다. 그 결과인 LoomFormer는 3x 넘는 compute로 학습한 Transformer, 그리고 ~1.7–2.8x로 학습한 HC/mHC·MUDDFormer·AttnRes와 맞먹는다.",
+      "key_points": [
+        "vertical attention은 token별 matrix memory 위의 normalized·gated linear attention으로 구현되며, 이 memory가 두 번째 residual stream이 되어 control(vector)과 content(matrix)를 나눠 맡는다.",
+        "같은 300B token으로 학습하고 FLOPs는 2%만 늘렸는데, LoomPythia-2.8B의 downstream 향상 폭이 mHC-Pythia-2.8B의 ~1.6x였고 Pythia-12B와 0-shot에서 같고 5-shot에서는 앞섰다.",
+        "결과는 language modeling과 downstream task에서 보고됐고, 추론 latency나 메모리 오버헤드 수치는 source에 없다."
+      ],
+      "efficiency": "FLOPs를 2%만 더 써서 3x 넘는 compute를 쓴 Transformer와 같은 품질을 내므로, 학습 compute 효율이 크게 오른다.",
+      "tags": [
+        "architecture",
+        "attention",
+        "residual-stream",
+        "compute-efficiency"
+      ]
+    }
+  ]
+}
