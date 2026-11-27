@@ -1,12 +1,12 @@
 name: Daily digest
 
 on:
-  # GitHub may start a scheduled run late or drop it altogether, so the same day is scheduled three
-  # times. A run that finds today's digest already written skips Claude and just redeploys.
+  # GitHub starts scheduled runs for this repository hours late and drops many of them, so a single
+  # daily time cannot be relied on. Instead a run is scheduled every hour: the first one that
+  # actually starts after midnight KST writes the day's digest, and every later one that day stops
+  # in the `check` job after a few seconds (no Claude call, no deploy).
   schedule:
-    - cron: "17 22 * * *" # 07:17 KST (22:17 UTC the day before)
-    - cron: "47 23 * * *" # 08:47 KST
-    - cron: "17 2 * * *" # 11:17 KST
+    - cron: "23 * * * *"
   workflow_dispatch:
     inputs:
       force:
@@ -30,9 +30,29 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build:
+  check:
     # Schedules only run on the default branch; keep pushes and manual runs consistent with that.
     if: github.ref_name == github.event.repository.default_branch
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      run: ${{ steps.today.outputs.run }}
+    steps:
+      - uses: actions/checkout@v5
+      - id: today
+        name: Is there anything to do?
+        run: |
+          file="data/digests/$(TZ=Asia/Seoul date +%F).json"
+          if [ "${{ github.event_name }}" = "schedule" ] && [ -f "$file" ]; then
+            echo "$file already exists - nothing to do."
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  build:
+    needs: check
+    if: needs.check.outputs.run == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     env:

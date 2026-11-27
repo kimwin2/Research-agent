@@ -3,7 +3,7 @@
 Hacker News · Hugging Face Daily Papers · arXiv에서 LLM / VLM / VLA 관련 글과 논문을 모으고,
 Claude가 **효율(efficiency) 관점**에서 하루 5개를 골라 TL;DR로 정리해 GitHub Pages에 올리는 자동화입니다.
 
-- 매일 07:17 KST에 GitHub Actions가 실행됩니다. GitHub가 예약 실행을 늦추거나 건너뛰는 경우에 대비해 08:47, 11:17에도 다시 시도하며, 그날 다이제스트가 이미 있으면 Claude를 호출하지 않습니다.
+- GitHub Actions가 매시간 예약 실행됩니다. 자정(KST) 이후 처음 시작된 실행이 그날 다이제스트를 만들고, 이후 실행은 몇 초 만에 종료됩니다(Claude 호출 없음). GitHub의 예약 실행이 몇 시간씩 늦거나 누락되기 때문에 하루 한 번 예약으로는 부족합니다.
 - 결과는 `data/digests/YYYY-MM-DD.json`으로 커밋되고, 그 JSON으로 정적 사이트를 만들어 Pages에 배포합니다.
 - 한 번 소개한 항목은 다시 나오지 않습니다.
 
