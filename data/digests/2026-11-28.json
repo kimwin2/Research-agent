@@ -1,0 +1,185 @@
+{
+  "date": "2026-11-28",
+  "generated_at": "2026-11-27T22:46:33+00:00",
+  "candidates": {
+    "hackernews": 30,
+    "hf_daily": 60,
+    "arxiv": 20
+  },
+  "usage": {
+    "input_tokens": 22266,
+    "output_tokens": 3597,
+    "calls": 2,
+    "models": [
+      "claude-opus-5-5"
+    ]
+  },
+  "items": [
+    {
+      "id": "arxiv:2611.34051",
+      "title": "Stable Gated DeltaNet-2: Understanding and Mitigating Recurrent State Instability",
+      "url": "https://arxiv.org/abs/2611.34051",
+      "category": "LLM",
+      "published": "2026-11-27",
+      "sources": [
+        "hf_daily"
+      ],
+      "signals": {
+        "hf_upvotes": 128
+      },
+      "links": {
+        "arxiv": "https://arxiv.org/abs/2611.34051",
+        "hf": "https://huggingface.co/papers/2611.34051"
+      },
+      "media": null,
+      "headline": "GDN-2 장문맥 학습 붕괴의 원인을 비대칭 erase로 규명했고, symmetric erasure로 학습을 안정화하고 RULER 점수를 6.80점 올렸다.",
+      "tldr": "Gated DeltaNet-2는 erase 시 읽기 방향과 수정 방향이 비대칭이라 non-normal erase operator가 생기고, 그 결과 새 write가 없어도 state가 지수적으로 커지면서 장문맥 학습이 실패한다. 저자들은 symmetric erasure와 decay-regulated residual writing으로 state 전파를 non-expansive하게 만들었고, ~1.6B 모델에서 학습이 안정되면서 long-context retrieval도 좋아졌다.",
+      "key_points": [
+        "Symmetric erasure로 state 전파를 non-expansive하게 만들고, decay-regulated residual writing으로 write 유연성은 그대로 유지하며, 이론적으로 state 성장을 O(T)로 상한한다.",
+        "GDN-2와 비교해 recurrent 설정에서 128K RULER 평균이 6.80점, hybrid 설정에서 downstream 9개 task 평균 정확도가 0.62점 올랐다.",
+        "검증한 규모는 ~1.6B 모델뿐이고, hybrid 설정에서의 향상폭은 작다."
+      ],
+      "efficiency": "chunkwise parallel 연산을 유지하므로 linear attention의 선형 복잡도와 고정 크기 state를 그대로 쓰면서 장문맥 학습 실패를 피할 수 있다. 속도 수치는 따로 제시하지 않았다.",
+      "tags": [
+        "linear-attention",
+        "long-context",
+        "training-stability",
+        "recurrent-state"
+      ]
+    },
+    {
+      "id": "hn:50657265",
+      "title": "AMD-specific fork of llama.cpp",
+      "url": "https://devnull.land/amd-specific-llama-cpp",
+      "category": "Systems",
+      "published": "2026-11-26",
+      "sources": [
+        "hackernews"
+      ],
+      "signals": {
+        "hn_points": 437,
+        "hn_comments": 104
+      },
+      "links": {
+        "hn": "https://news.ycombinator.com/item?id=50657265"
+      },
+      "media": null,
+      "headline": "llama.cpp용 AMD 전용 패치셋 llama-cpp-rdna-boosts를 쓰니 prefill 약 1.9배, decode 약 1.6배가 빨라졌다.",
+      "tldr": "필자는 하드웨어 특화 inference fork가 쏟아지는 가운데 일부(Strata 등)가 VRAM에 올라간 expert를 우선 선택하는 식으로 모델 동작 자체를 바꿔 속도를 낸다고 비판한다. 그 대안으로 pinned llama.cpp commit 위에 작은 AMD 패치만 얹는 rdna-boosts를 소개하며, 본인 환경에서 실제로 큰 속도 향상을 얻었다고 보고한다.",
+      "key_points": [
+        "새 버전 llama.cpp에 계속 재적용되는 최소 패치셋 방식이고, ROCm podman 이미지로 배포된다.",
+        "eGPU로 연결한 AMD R9700에서 Qwen3.8-27B 계열 GGUF(Q6_K_L, MTP 활성화)를 돌렸을 때 prefill이 ~700에서 ~1300 t/s로, token generation이 ~35에서 ~55 t/s로 늘었다.",
+        "단일 사용자 환경 한 곳에서 측정한 일화성 결과이고(YMMV), 패치 문서가 LLM으로 생성돼 다소 불투명하다는 한계가 있다."
+      ],
+      "efficiency": "모델 동작을 바꾸지 않고 AMD RDNA 전용 kernel 패치만으로 prefill 약 86%, decode 약 57%의 처리량 향상을 냈다.",
+      "tags": [
+        "inference-engine",
+        "amd-rocm",
+        "llama-cpp"
+      ]
+    },
+    {
+      "id": "arxiv:2611.21003",
+      "title": "K2-Horizon: A Frontier Fleet of Open Source Language Models",
+      "url": "https://arxiv.org/abs/2611.21003",
+      "category": "LLM",
+      "published": "2026-11-17",
+      "sources": [
+        "hf_daily"
+      ],
+      "signals": {
+        "hf_upvotes": 94
+      },
+      "links": {
+        "arxiv": "https://arxiv.org/abs/2611.21003",
+        "hf": "https://huggingface.co/papers/2611.21003"
+      },
+      "media": null,
+      "headline": "K2-Horizon은 0.9B~375B-A23B 완전 공개 모델 6종으로, 36B-A4B 모델이 active 파라미터 1/7로 32B dense에 근접했다.",
+      "tldr": "LLM360 기준의 완전 오픈소스 모델 6종을 공개했다. 체크포인트, 데이터, 로그, 학습 코드와 데이터 생성 파이프라인까지 모두 포함한다. 모델링 측면에서는 MoVA(value projection에 MoE 적용)와 softplus attention gating을 도입했고, 드래프트 모델 없이 decoding을 가속하는 diffusion adapter Uno도 내놓았다.",
+      "key_points": [
+        "MoVA와 softplus gating을 적용한 36B-A4B 모델이 같은 데이터로 학습한 32B dense 모델에 거의 필적하며, active 파라미터는 1/7 수준이다.",
+        "Uno lossless diffusion adapter는 별도 draft model 없이 decoding을 최대 2.2배 빠르게 한다.",
+        "약 10T의 synthetic token이 포함된 22T-token 코퍼스를 4개 모델이 공유해 scale과 sparsity를 통제한 비교가 가능하다. 다만 벤치마크 수치는 'lead or competitive'라는 정성적 표현으로만 제시됐다."
+      ],
+      "efficiency": "sparse MoVA로 active 파라미터를 1/7로 줄이면서 dense 수준 성능을 유지했고, Uno로 drafter 없이 decoding을 최대 2.2배 가속했다.",
+      "tags": [
+        "moe",
+        "open-source-llm",
+        "speculative-decoding",
+        "attention-gating"
+      ]
+    },
+    {
+      "id": "arxiv:2611.18482",
+      "title": "MMFlash: Faster Speculative Decoding for Vision-Language Models",
+      "url": "https://arxiv.org/abs/2611.18482",
+      "category": "VLM",
+      "published": "2026-11-16",
+      "sources": [
+        "hf_daily"
+      ],
+      "signals": {
+        "hf_upvotes": 44,
+        "github_stars": 50
+      },
+      "links": {
+        "arxiv": "https://arxiv.org/abs/2611.18482",
+        "hf": "https://huggingface.co/papers/2611.18482",
+        "code": "https://github.com/fscdc/MMFlash"
+      },
+      "media": {
+        "type": "video",
+        "url": "https://cdn-uploads.huggingface.co/production/uploads/67a4a26d5e65aa63c6d30e68/jk293YGyi9qbUA2ZILVTr.mp4"
+      },
+      "headline": "MMFlash는 시각 의존 token을 가중 학습하는 diffusion drafter로, VLM에서 최대 3.58배의 lossless 가속을 달성했다.",
+      "tldr": "DFlash 같은 diffusion drafter는 주로 텍스트에 맞춰져 있어, 시각 정보에 의존하는 token에서는 acceptance rate가 떨어진다. 저자들은 시각 입력 유무에 따른 KL 기반 visual dependence 지표로 이 문제를 정량화하고, drafter가 잘 맞히지 못하는 시각 의존 token을 adaptive하게 upweight하는 MMFlash를 제안했다.",
+      "key_points": [
+        "visual dependence 최저 사분위의 acceptance rate는 46%인데 최고 사분위는 22%이고, 이 격차는 multimodal 학습 후에도 남는다.",
+        "MMFlash는 최대 3.58배 lossless speedup을 냈고, EAGLE-3보다 최대 195.4%, DFlash보다 최대 17.1% 앞선다.",
+        "긴 video 입력에서는 sparse attention으로 중복 attention 연산을 줄여 drafting 품질을 높인다."
+      ],
+      "efficiency": "출력을 바꾸지 않는 lossless 방식으로 VLM decoding을 최대 3.58배 가속하며, 장시간 video drafting에서는 sparse attention으로 연산도 줄인다.",
+      "tags": [
+        "speculative-decoding",
+        "vlm",
+        "diffusion-drafter",
+        "sparse-attention"
+      ]
+    },
+    {
+      "id": "arxiv:2611.27193",
+      "title": "cmHC: Balancing Stream Mixing in Hyper-Connections via Geometric Contraction",
+      "url": "https://arxiv.org/abs/2611.27193",
+      "category": "LLM",
+      "published": "2026-11-23",
+      "sources": [
+        "hf_daily"
+      ],
+      "signals": {
+        "hf_upvotes": 94,
+        "github_stars": 1
+      },
+      "links": {
+        "arxiv": "https://arxiv.org/abs/2611.27193",
+        "hf": "https://huggingface.co/papers/2611.27193",
+        "code": "https://github.com/Newiz430/cmHC"
+      },
+      "media": null,
+      "headline": "cmHC는 Birkhoff polytope를 내부로 수축해 hyper-connection의 under/over-mixing 문제를 해결하고, 지연을 최대 44.8% 줄였다.",
+      "tldr": "mHC는 residual stream mixing 행렬을 doubly stochastic으로 제약한다. 그런데 행렬이 polytope의 꼭짓점 근처에 머물면 stream들이 서로 독립적인 상태로 퇴화하고, 중심(barycenter) 근처로 몰리면 stream끼리 구분이 사라지는 trade-off가 생긴다. cmHC는 polytope를 기하학적으로 수축하는 exact doubly stochastic 방법으로 under-mixing을 막고, 얕은 층에는 수축을 약하게 걸어 over-mixing을 막는다.",
+      "key_points": [
+        "새로운 parameterization 없이 polytope 수축만으로 stream mixing의 하한을 증명 가능하게 보장한다.",
+        "dense와 MoE 모델 모두에서 여러 규모로 효과와 확장성을 보였고, 초대규모 pretraining에서도 gradient 전파가 안정적이라고 주장한다. 다만 abstract에는 구체적인 성능 수치가 없다.",
+        "Ascend NPU용 fused operator로 hyper-connection 실행 지연을 최대 44.8% 줄였다. 이 수치는 Ascend NPU 환경에 한정된다."
+      ],
+      "efficiency": "Ascend NPU fused kernel로 hyper-connection 실행 지연을 최대 44.8% 줄였다. 품질 향상 폭은 abstract에 수치로 나와 있지 않다.",
+      "tags": [
+        "hyper-connections",
+        "residual-stream",
+        "pretraining-stability",
+        "npu-kernels"
+      ]
+    }
+  ]
+}
